@@ -1,0 +1,91 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys
+
+ports = """
+  src/ports/SkDebug_stdio.cpp                                                                                                  
+  src/ports/SkGlobals_global.cpp                                                                                               
+  src/ports/SkOSFile_stdio.cpp                                                                                                 
+  src/ports/SkThread_pthread.cpp                                                                                               
+  src/ports/SkTime_Unix.cpp
+  src/ports/SkFontHost_gamma_none.cpp
+  src/ports/SkFontHost_FreeType.cpp
+  src/ports/SkFontHost_FreeType_Subpixel.cpp
+  src/ports/SkFontHost_tables.cpp
+  src/ports/SkXMLParser_empty.cpp
+""".split()
+
+opts = """
+  src/opts/SkBlitRow_opts_none.cpp                                                                                             
+  src/opts/SkBitmapProcState_opts_none.cpp                                                                                     
+  src/opts/SkUtils_opts_none.cpp                                                                                               
+""".split() 
+
+xml = """
+  src/xml/SkDOM.cpp
+  src/xml/SkXMLParser.cpp
+  src/xml/SkXMLWriter.cpp
+""".split()
+
+defines = """
+  GL_GLEXT_PROTOTYPES 
+  SK_SUPPORT_LCDTEXT 
+  SK_CAN_USE_FLOAT 
+  SK_SCALAR_IS_FLOAT
+  SK_DEBUG 
+  SK_SUPPORT_UNIT 
+""".split()
+
+defines_linux = """
+   SK_BUILD_FOR_UNIX
+""".split()
+
+defines_darwin = """
+   SK_BUILD_FOR_MAC
+""".split()
+
+includes = """
+  src/core 
+  include/config 
+  include/core 
+  include/effects 
+  include/images 
+  include/utils 
+  include/views 
+  include/xml 
+  include/animator
+""".split()
+
+def configure(conf):
+   conf.check_tool('g++')
+
+   conf.check_cfg(package='freetype2', atleast_version='6.3', uselib_store='freetype', args='--cflags --libs', mandatory=1)
+   conf.check_cfg(package='libpng', atleast_version='1.2.37', uselib_store='png', args='--cflags --libs', mandatory=1)
+
+   conf.env.CXXFLAGS = ['-g', '-w', '-msse2' ]
+   
+   if sys.platform == 'darwin':
+      defines.extend(defines_darwin)
+   else:
+      defines.extend(defines_linux)
+
+
+
+def build(bld):
+
+   obj = bld(
+      features = 'cxx cstaticlib',
+      target = 'skia',
+      defines = defines,
+      includes = includes,
+      export_incdirs = includes,
+      uselib = 'freetype'  )
+
+   # add the files to the list of sources to compile
+   obj.find_sources_in_dirs('src/core src/effects') #' src/gl')
+
+   # skip the files we don't have to compile
+   obj.source.remove('src/core/SkDrawing.cpp')
+   obj.source.extend(ports)
+                                                                                                     
+  

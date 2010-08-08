@@ -1,5 +1,6 @@
 
 import os.path
+import Utils
 
 top = '.'
 out = 'build'
@@ -9,6 +10,7 @@ SOURCE = """
    src/Canvas.cpp
    src/Context.cpp
    src/Script.cpp
+   src/State.cpp
    src/Painter.cpp
    src/binding/Object.cpp
    src/util/Thread.cpp
@@ -28,28 +30,26 @@ def files_exists(files, path):
    return False
 
 def set_options(conf):
-   conf.add_option('--skia-include', action='store', default=None, help="Search path to Skia include path.")
-   conf.add_option('--skia-lib', action='store', default=None, help="Search path to Skia lib path.")
-   conf.add_option('--v8-include', action='store', default=None, help="Search path to V8 include path.")
-   conf.add_option('--v8-lib', action='store', default=None, help="Search path to V8 lib path.")
+   conf.add_option('--build-deps', action='store', default=False, help="Download and build the dependencies Skia and V8.")
+   conf.add_option('--skia-include', action='store', default='./deps/skia/include', help="Search path to Skia include path.")
+   conf.add_option('--skia-lib', action='store', default='./deps/skia/build/default', help="Search path to Skia lib path.")
+   conf.add_option('--v8-include', action='store', default='./deps/v8/include', help="Search path to V8 include path.")
+   conf.add_option('--v8-lib', action='store', default='./deps/v8', help="Search path to V8 lib path.")
 
 def configure(conf):
    import Options
+   
+   # Should we fetch and build the dependencies?
+   if Options.options.build_deps:
+      Utils.pproc.Popen("./deps/fetch_and_build.sh", shell=True).wait()
+   
+   # Make sure we have access to the g++ compiler
    conf.check_tool('g++')
    
    conf.env.CANVAS_DEFINES = []
    
    if conf.check(lib='pthread', uselib_store='pthread', mandatory=True):
       conf.env.CANVAS_DEFINES.extend('CANVAS_USE_PTHREAD')
-   
-   if Options.options.skia_include == None:
-      conf.fatal("Missing Skia include path!")
-   if Options.options.skia_lib == None:
-      conf.fatal("Missing Skia lib path!")
-   if Options.options.v8_include == None:
-      conf.fatal("Missing V8 include path!")
-   if Options.options.v8_lib == None:
-      conf.fatal("Missing V8 lib path!")
    
    conf.env.SKIA_INCLUDE = Options.options.skia_include
    conf.env.SKIA_LIB = Options.options.skia_lib
