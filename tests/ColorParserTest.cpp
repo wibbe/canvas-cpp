@@ -1,6 +1,6 @@
 
 #include <tut/tut.hpp>
-#include "ColorParser.h"
+#include "../src/ColorParser.h"
 
 using namespace canvas;
 
