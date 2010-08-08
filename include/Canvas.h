@@ -12,6 +12,10 @@ namespace canvas
    
    class Canvas
    {
+      private:
+         Canvas(Canvas const& other);
+         Canvas & operator = (Canvas const& other);
+         
       public:
          Canvas(int width, int height, bool threaded = true);
          ~Canvas();
