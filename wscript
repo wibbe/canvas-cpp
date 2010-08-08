@@ -46,10 +46,7 @@ def configure(conf):
    # Make sure we have access to the g++ compiler
    conf.check_tool('g++')
    
-   conf.env.CANVAS_DEFINES = []
-   
-   if conf.check(lib='pthread', uselib_store='pthread', mandatory=True):
-      conf.env.CANVAS_DEFINES.extend('CANVAS_USE_PTHREAD')
+   conf.check(lib='pthread', uselib_store='pthread', mandatory=True)
    
    conf.env.SKIA_INCLUDE = Options.options.skia_include
    conf.env.SKIA_LIB = Options.options.skia_lib

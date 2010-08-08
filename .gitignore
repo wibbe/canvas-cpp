@@ -1,3 +1,5 @@
 .waf*
 .lock-wscript
 build/
+deps/skia
+deps/v8
