@@ -64,6 +64,14 @@ namespace canvas
       m_data->height = height;
       m_data->threaded = threaded;
    }
+
+   Canvas::Canvas(Canvas const& other)
+   {
+   }
+   
+   Canvas & Canvas::operator = (Canvas const& other)
+   {
+   }
    
    Canvas::~Canvas()
    {

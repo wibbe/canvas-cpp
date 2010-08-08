@@ -19,7 +19,7 @@ namespace canvas
       
       // Create V8 context
       m_scriptTemplate = v8::Persistent<v8::ObjectTemplate>::New(v8::ObjectTemplate::New());
-      v8::Local<v8::Context> context = v8::Local<v8::Context>::New(v8::Context::New(0, m_scriptTemplate));
+      v8::Local<v8::Context> jsContext = v8::Local<v8::Context>::New(v8::Context::New(0, m_scriptTemplate));
       
       // Create bindings
       m_windowBinding.function("setInterval", &Painter::setInterval)
@@ -27,12 +27,18 @@ namespace canvas
                      .function("getContext", &Painter::getContext)
                      .function("log", &Painter::log);
                      
+      m_contextBinding.function("beginPath", &Context::beginPath)
+                      .function("closePath", &Context::closePath)
+                      .function("moveTo", &Context::moveTo)
+                      .function("lineTo", &Context::lineTo);
+      
+      jsContext->Global()->Set(v8::String::New("window"), m_windowBinding.wrap(this));
                      
       // Create graphics context
       m_context = new Context(width, height);
       
       // Load script from file
-      m_script = new Script(context);
+      m_script = new Script(jsContext);
       m_script->load(filename);
    }
    
