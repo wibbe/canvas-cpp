@@ -7,7 +7,7 @@
 
 namespace canvas
 {
-   // Forward declarations
+   // Forward declaration
    class CanvasData;
    
    class Canvas
