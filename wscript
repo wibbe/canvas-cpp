@@ -81,6 +81,8 @@ def build(bld):
       staticlib = 'skia v8',
       libpath = [bld.env.SKIA_LIB, bld.env.V8_LIB])
       
+   canvas_lib.includes.extend([os.path.join(bld.env.SKIA_INCLUDE, 'core'), os.path.join(bld.env.SKIA_INCLUDE, 'config')])
+      
    tests = bld(
       features = "cxx cprogram",
       target = 'unit_tests',
