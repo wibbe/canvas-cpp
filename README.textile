@@ -1,0 +1,16 @@
+
+.h1 canvas-cpp
+
+An implementation of the javascript canvas api, written in C++.
+
+.h2 Building.
+
+./waf configure --build-deps=True
+./waf
+
+* This will download and build both Skia and V8, and then build the canvas library.
+* At the moment it only works on OS X!
+
+.h2 License
+
+See the LICENSE file for legal information.
