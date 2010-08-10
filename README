@@ -1,2 +1,13 @@
 
-A javascript canvas implementation in C++.
+An implementation of the javascript canvas api.
+
+----
+
+Building.
+
+./waf configure --build-deps=True
+./waf
+
+----
+
+See the LICENSE file for legal information.
