@@ -8,6 +8,15 @@ namespace tut
 {
    struct CanvasData
    {
+      CanvasData()
+         : canvas(new Canvas(100, 100, false))
+      { }
+      
+      ~CanvasData()
+      {
+         delete canvas;
+      }
+      
       Canvas  * canvas;
    };
    
@@ -19,8 +28,23 @@ namespace tut
    void object::test<1>()
    {
       set_test_name("Canvas allocation");
+   }
+   
+   template <>
+   template <>
+   void object::test<2>()
+   {
+      set_test_name("Javascript Test 1");
       
-      canvas = new Canvas(100, 100, false);
-      delete canvas;
+      canvas->loadCode("(function() { })();");
+   }
+   
+   template <>
+   template <>
+   void object::test<3>()
+   {
+      set_test_name("Javascript Test 2: window.log()");
+      
+      //canvas->loadCode("");
    }
 }
