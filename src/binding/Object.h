@@ -24,6 +24,12 @@ namespace binding {
    class Object
    {
       public:
+         
+         /// Copy constructor
+         Object(Object const& other)
+         {
+            m_functionTemplate = v8::Persistent<v8::FunctionTemplate>::New(other.m_functionTemplate);
+         }
       
          Object(std::string const& name)
          {
