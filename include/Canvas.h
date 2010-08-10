@@ -29,8 +29,8 @@ namespace canvas
          /// Returns true if the canvas should be rendered.
          bool isDirty() const;
          
-         /// Render the canvas to the supplied image data.
-         void render(unsigned char * imageData);
+         /// Paint the canvas to the supplied image data.
+         void paint(unsigned char * imageData);
          
          /// Pops and returns the last javascript log entry.
          /// Returns the empty string if no log entires exists.

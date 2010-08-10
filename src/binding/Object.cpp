@@ -12,7 +12,6 @@ namespace binding {
    
    v8::Handle<v8::Value> scriptConstructor(v8::Arguments const& args)
    {
-      std::cerr << "Constructor called" << std::endl;
       return v8::Undefined();
    }
    

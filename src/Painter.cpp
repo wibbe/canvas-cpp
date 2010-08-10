@@ -16,12 +16,12 @@ namespace canvas
         m_windowBinding(0),
         m_contextBinding(0)
    {
-      std::cerr << "Painter..." << std::endl;
       v8::HandleScope scope;
       
       // Create V8 context
       m_scriptTemplate = v8::Persistent<v8::ObjectTemplate>::New(v8::ObjectTemplate::New());
       v8::Local<v8::Context> jsContext = v8::Local<v8::Context>::New(v8::Context::New(0, m_scriptTemplate));
+
       
       // Create bindings
       m_windowBinding = new binding::Object<Painter>("Window");
@@ -35,7 +35,9 @@ namespace canvas
                       .function("closePath", &Context::closePath)
                       .function("moveTo", &Context::moveTo)
                       .function("lineTo", &Context::lineTo);
-                      
+      
+      v8::Context::Scope contextScope(jsContext);
+      
       // Inject the window object
       jsContext->Global()->Set(v8::String::New("window"), m_windowBinding->wrap(this));
                      
@@ -119,7 +121,7 @@ namespace canvas
       if (m_history.size() > 1000)
          m_history.pop_front();
          
-      std::cerr << "Log: " << log << std::endl;
+      std::cerr << log << std::endl;
    }
    
    std::string Painter::lastLogEntry()

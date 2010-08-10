@@ -96,8 +96,8 @@ namespace binding {
          {
             v8::HandleScope scope;
             
-            if (!object)
-               scope.Close(v8::Undefined());
+            //if (!object)
+            //   scope.Close(v8::Undefined());
                
             v8::Local<v8::Object> result = m_functionTemplate->GetFunction()->NewInstance();
             result->SetInternalField(0, v8::External::New(object));

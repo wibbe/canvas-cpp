@@ -84,7 +84,7 @@ namespace canvas
       return false;
    }
    
-   void Canvas::render(unsigned char * imageData)
+   void Canvas::paint(unsigned char * imageData)
    {
       if (!m_data->threaded)
          m_data->painter->draw();
