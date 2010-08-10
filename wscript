@@ -1,6 +1,7 @@
 
 import os.path
 import Utils
+import Scripting
 
 top = '.'
 out = 'build'
@@ -101,3 +102,8 @@ def build(bld):
       staticlib = ['skia', 'v8'],
       libpath = [os.path.join('..', bld.env.SKIA_LIB), os.path.join('..', bld.env.V8_LIB)])
 
+def run_test(bld):
+   Utils.pproc.Popen("./build/default/unit_tests", shell=True).wait()
+
+def test(bld):
+   Scripting.commands += ['configure', 'build', 'run_test']
