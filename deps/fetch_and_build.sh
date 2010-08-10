@@ -6,7 +6,7 @@ echo "Fetching Skia..."
 svn checkout http://skia.googlecode.com/svn/trunk/ skia
 
 cd skia
-make SKIA_BUILD_FOR=mac
+make SKIA_BUILD_FOR=mac SKIA_DEBUG=true
 
 cd ..
 
@@ -15,4 +15,4 @@ svn checkout http://v8.googlecode.com/svn/trunk/ v8
 
 cd v8
 echo "Building V8..."
-scons mode=release library=static snapshot=off -j4
+scons mode=debug library=static snapshot=off -j4
