@@ -7,14 +7,16 @@
 namespace canvas
 {
    
-   Painter::Painter(int width, int height, std::string const& filename)
-      : m_mutex(),
+   Painter::Painter(int width, int height, std::string const&  fileOrCode, bool isFile)
+      : m_painterMutex(),
+        m_logMutex(),
         m_script(0),
         m_context(0),
         m_callbackIndex(0),
-        m_windowBinding("Window"),
-        m_contextBinding("Context")
+        m_windowBinding(0),
+        m_contextBinding(0)
    {
+      std::cerr << "Painter..." << std::endl;
       v8::HandleScope scope;
       
       // Create V8 context
@@ -22,24 +24,30 @@ namespace canvas
       v8::Local<v8::Context> jsContext = v8::Local<v8::Context>::New(v8::Context::New(0, m_scriptTemplate));
       
       // Create bindings
-      m_windowBinding.function("setInterval", &Painter::setInterval)
+      m_windowBinding = new binding::Object<Painter>("Window");
+      m_windowBinding->function("setInterval", &Painter::setInterval)
                      .function("clearInterval", &Painter::clearInterval)
                      .function("getContext", &Painter::getContext)
                      .function("log", &Painter::log);
-                     
-      m_contextBinding.function("beginPath", &Context::beginPath)
+      
+      m_contextBinding = new binding::Object<Context>("Context");
+      m_contextBinding->function("beginPath", &Context::beginPath)
                       .function("closePath", &Context::closePath)
                       .function("moveTo", &Context::moveTo)
                       .function("lineTo", &Context::lineTo);
-      
-      jsContext->Global()->Set(v8::String::New("window"), m_windowBinding.wrap(this));
+                      
+      // Inject the window object
+      jsContext->Global()->Set(v8::String::New("window"), m_windowBinding->wrap(this));
                      
       // Create graphics context
       m_context = new Context(width, height);
       
-      // Load script from file
+      // Create javascript object
       m_script = new Script(jsContext);
-      m_script->load(filename);
+      if (isFile)
+         m_script->load(fileOrCode);
+      else
+         m_script->runString(fileOrCode);
    }
    
    Painter::~Painter()
@@ -50,7 +58,7 @@ namespace canvas
    
    void Painter::draw()
    {
-      ScopedLock lock(m_mutex);
+      ScopedLock lock(m_painterMutex);
       
       // Call all registered callbacks
       v8::HandleScope scope;
@@ -75,7 +83,7 @@ namespace canvas
    
    void Painter::copyImageData(unsigned char * data)
    {
-      ScopedLock lock(m_mutex);
+      ScopedLock lock(m_painterMutex);
    }
    
    int Painter::setInterval(v8::Handle<v8::Function> const& function)
@@ -95,7 +103,7 @@ namespace canvas
    {
       v8::HandleScope scope;
       if (type == "2d")
-         return scope.Close(m_contextBinding.wrap(m_context));
+         return scope.Close(m_contextBinding->wrap(m_context));
       
       std::cerr << "Error: Requested wrong context type '" << type << "'" << std::endl;
       return v8::Undefined();
@@ -103,7 +111,27 @@ namespace canvas
    
    void Painter::log(std::string const& log)
    {
+      ScopedLock lock(m_logMutex);
+      
+      m_history.push_back(log);
+      
+      // We only store a 1000 log entries
+      if (m_history.size() > 1000)
+         m_history.pop_front();
+         
       std::cerr << "Log: " << log << std::endl;
+   }
+   
+   std::string Painter::lastLogEntry()
+   {
+      ScopedLock lock(m_logMutex);
+      
+      if (m_history.empty())
+         return "";
+      
+      std::string log = m_history.front();
+      m_history.pop_front();
+      return log;
    }
    
 }

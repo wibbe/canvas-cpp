@@ -102,4 +102,20 @@ namespace canvas
          m_data->thread = new CanvasThread(m_data->painter);
    }
    
+   void Canvas::loadCode(std::string const& code)
+   {
+      assert(!m_data->painter && "Only one script per canvas is allowed!");
+      
+      m_data->painter = new Painter(m_data->width, m_data->height, code, false);
+      
+      if (m_data->threaded)
+         m_data->thread = new CanvasThread(m_data->painter);
+   }
+   
+   std::string Canvas::lastLogEntry()
+   {
+      assert(m_data->painter);
+      return m_data->painter->lastLogEntry();
+   }
+   
 }
