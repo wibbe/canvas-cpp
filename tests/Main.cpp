@@ -8,15 +8,34 @@ namespace tut
    test_runner_singleton runner;
 }
 
+class outbuf : public std::streambuf
+{
+   public:
+      outbuf()
+      {
+         setp(0, 0);
+      }
+
+      virtual int_type overflow(int_type c = traits_type::eof())
+      {
+         return c;
+      }
+};
+
 int main(int argc, const char* argv[])
 {
    tut::console_reporter reporter;
    tut::runner.get().set_callback(&reporter);
+   
+   // Redirect std::cerr so we don't print anything while running tests
+   outbuf ob;
+   std::streambuf *sb = std::cerr.rdbuf(&ob);
 
    try
    {
       if(tut::tut_main(argc, argv))
       {
+         std::cerr.rdbuf(sb);
          if(reporter.all_ok())
          {
             return 0;
