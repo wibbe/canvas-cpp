@@ -28,6 +28,7 @@ namespace canvas
          Painter * m_painter;
    };
    
+   /// Holds all private data for the Canvas class.
    class CanvasData
    {
       public:
@@ -56,6 +57,7 @@ namespace canvas
          Painter * painter;
          Thread * thread;
    };
+   
    
    Canvas::Canvas(int width, int height, bool threaded)
       : m_data(new CanvasData())
@@ -92,7 +94,7 @@ namespace canvas
    
    void Canvas::loadScript(std::string const& filename)
    {
-      assert(!m_data->painter && "Only allow one script per canvas is allowed!");
+      assert(!m_data->painter && "Only one script per canvas is allowed!");
       
       m_data->painter = new Painter(m_data->width, m_data->height, filename);
       

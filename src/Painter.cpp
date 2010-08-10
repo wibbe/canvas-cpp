@@ -98,7 +98,7 @@ namespace canvas
          return scope.Close(m_contextBinding.wrap(m_context));
       
       std::cerr << "Error: Requested wrong context type '" << type << "'" << std::endl;
-      return scope.Close(v8::Undefined());
+      return v8::Undefined();
    }
    
    void Painter::log(std::string const& log)
