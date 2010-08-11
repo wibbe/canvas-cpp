@@ -87,3 +87,4 @@ namespace tut
       ensure(canvas->lastLogEntry() == "True");
    }
 }
+

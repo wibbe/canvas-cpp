@@ -24,3 +24,4 @@ namespace canvas
       pthread_mutex_unlock(&m_mutex);
    }
 }
+
