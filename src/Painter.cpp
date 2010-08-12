@@ -91,7 +91,8 @@ namespace canvas
    void Painter::copyImageTo(unsigned char * target)
    {
       ScopedLock lock(m_painterMutex);
-      m_context->copyImageTo(target);
+      if (target)
+         m_context->copyImageTo(target);
    }
    
    int Painter::setInterval(v8::Handle<v8::Function> const& function)
