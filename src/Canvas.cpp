@@ -89,7 +89,7 @@ namespace canvas
       if (!m_data->threaded)
          m_data->painter->draw();
 
-      m_data->painter->copyImageData(imageData);
+      m_data->painter->copyImageTo(imageData);
    }
    
    void Canvas::loadScript(std::string const& filename)

@@ -31,10 +31,15 @@ namespace canvas
                      .function("log", &Painter::log);
       
       m_contextBinding = new binding::Object<Context>("Context");
-      m_contextBinding->function("beginPath", &Context::beginPath)
+      m_contextBinding->function("scale", &Context::scale)
+                      .function("rotate", &Context::rotate)
+                      .function("translate", &Context::translate)
+                      .function("beginPath", &Context::beginPath)
                       .function("closePath", &Context::closePath)
                       .function("moveTo", &Context::moveTo)
-                      .function("lineTo", &Context::lineTo);
+                      .function("lineTo", &Context::lineTo)
+                      .function("fillRect", &Context::fillRect)
+                      .function("strokeRect", &Context::strokeRect);
       
       v8::Context::Scope contextScope(jsContext);
       
@@ -83,9 +88,10 @@ namespace canvas
       }
    }
    
-   void Painter::copyImageData(unsigned char * data)
+   void Painter::copyImageTo(unsigned char * target)
    {
       ScopedLock lock(m_painterMutex);
+      m_context->copyImageTo(target);
    }
    
    int Painter::setInterval(v8::Handle<v8::Function> const& function)

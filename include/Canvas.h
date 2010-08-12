@@ -30,6 +30,8 @@ namespace canvas
          bool isDirty() const;
          
          /// Paint the canvas to the supplied image data.
+         /// Note that the image format is 32-bits per pixel
+         /// organized in ARGB.
          void paint(unsigned char * imageData);
          
          /// Pops and returns the last javascript log entry.

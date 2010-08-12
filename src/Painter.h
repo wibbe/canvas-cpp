@@ -24,7 +24,7 @@ namespace canvas
          
          void draw();
          
-         void copyImageData(unsigned char * data);
+         void copyImageTo(unsigned char * target);
          
          int setInterval(v8::Handle<v8::Function> const& function);
          void clearInterval(int index);
