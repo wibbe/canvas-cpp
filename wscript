@@ -1,5 +1,6 @@
 
 import os.path
+import sys
 import Utils
 import Scripting
 
@@ -37,6 +38,7 @@ def set_options(conf):
    conf.add_option('--skia-lib', action='store', default='./deps/skia/out', help="Search path to Skia lib path.")
    conf.add_option('--v8-include', action='store', default='./deps/v8/include', help="Search path to V8 include path.")
    conf.add_option('--v8-lib', action='store', default='./deps/v8', help="Search path to V8 lib path.")
+   conf.tool_options('boost')
 
 def configure(conf):
    import Options
@@ -47,10 +49,15 @@ def configure(conf):
    
    # Make sure we have access to the g++ compiler
    conf.check_tool('g++')
-   conf.check_tool('osx')
+   conf.check_tool('boost')
+   
+   if sys.platform == 'darwin':
+      conf.check_tool('osx')
+      conf.env.FRAMEWORK = ['Carbon']
+   else:
+      conf.check_cfg(package='freetype2', atleast_version='6.3', uselib_store='freetype', args='--cflags --libs', mandatory=1)
    
    conf.check(lib='pthread', uselib_store='pthread', mandatory=True)
-   conf.check_cfg(package='freetype2', atleast_version='6.3', uselib_store='freetype', args='--cflags --libs', mandatory=1)
    
    conf.env.SKIA_INCLUDE = Options.options.skia_include
    conf.env.SKIA_LIB = Options.options.skia_lib
@@ -59,8 +66,6 @@ def configure(conf):
    
    conf.env.CPPFLAGS = ['-g', '-m32'] #, '-isysroot /Developer/SDKs/MacOSX10.4u.sdk']
    conf.env.LINKFLAGS = ['-m32']
-   
-   conf.env.FRAMEWORK = ['Carbon']
    
    # Check that we have access to both Skia and V8.
    skiaHeaderExists = files_exists([os.path.join('core', 'SkCanvas.h')], conf.env.SKIA_INCLUDE)
@@ -82,8 +87,6 @@ def build(bld):
       target = 'canvas',
       source = SOURCE,
       defines = [],
-      ccflags = ['-g', '-m32'],
-      linkflags = ['-m32'],
       includes = ['src', 'src/binding', 'include', bld.env.SKIA_INCLUDE, bld.env.V8_INCLUDE],
       uselib = 'pthread',
       staticlib = ['skia', 'v8'],
