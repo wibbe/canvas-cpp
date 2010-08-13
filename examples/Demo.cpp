@@ -20,7 +20,11 @@ int main(int argc, char * argv[])
    SDL_WM_SetCaption("Canvas++ Demo", 0);
    
    // Create the canvas
-   Canvas * canvas = new Canvas(800, 500, true);
+   Canvas * canvas = new Canvas(800, 500, false);
+   SDL_Surface * target = SDL_CreateRGBSurface(SDL_SWSURFACE, 800, 500, 32, 0x00FF0000, 
+                                                                            0x0000FF00,
+                                                                            0x000000FF,
+                                                                            0xFF000000);
 
    // Enter the application loop
    while (running)
@@ -41,6 +45,13 @@ int main(int argc, char * argv[])
                   break;
             }
          }
+      }
+      
+      if (canvas->isDirty())
+      {
+         SDL_LockSurface(target);
+         canvas->paint(static_cast<unsigned char*>(target->pixels));
+         SDL_UnlockSurface(target);
       }
       
       SDL_Flip(screen);
