@@ -1,0 +1,19 @@
+
+SET(SOURCE 
+  Demo.cpp
+)
+
+SET(LIBRARIES
+  canvas
+  skia
+  v8
+  ${SDL_LIBRARY}
+)
+              
+IF (APPLE)
+  SET(SOURCE ${SOURCE} SDLMain.m)
+  SET(LIBRARIES ${LIBRARIES} ${Carbon_FRAMEWORK})
+ENDIF (APPLE)
+
+ADD_EXECUTABLE(demo ${SOURCE})
+TARGET_LINK_LIBRARIES(demo ${LIBRARIES})
