@@ -6,7 +6,7 @@ configure:
 	(cd build && cmake ..)
 	
 compile:
-	(cd build && make -j4)
+	make -C build
 	
 run:
 	(cd build/bin && ./demo)
@@ -15,7 +15,7 @@ test:
 	(cd build/bin && ./unit_test)
 	
 clean:
-	(cd build && make clean)
+	make -C build clean
 	
 distclean:
 	(rm -rf build)
