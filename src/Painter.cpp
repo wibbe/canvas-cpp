@@ -69,6 +69,8 @@ namespace canvas
                        .function("lineTo", &Context::lineTo)
                        .function("fillRect", &Context::fillRect)
                        .function("strokeRect", &Context::strokeRect)
+                       .attribute("width", &Context::width, &Context::setWidth)
+                       .attribute("height", &Context::height, &Context::setHeight)
                        .attribute("lineWidth", &Context::lineWidth, &Context::setLineWidth)
                        .attribute("lineCap", &Context::lineCap, &Context::setLineCap);
       
