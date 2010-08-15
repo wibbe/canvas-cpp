@@ -2,13 +2,30 @@ h1. canvas-cpp
 
 An implementation of the javascript canvas api, written in C++.
 
+Modern browsers that support HTML5 comes with a handy element called the canvas. It provides a surface that can be drawn upon using Javascript. Using this canvas all sorts of things can be created.
+
+This library makes it possible to embed such a canvas into another application. This is especially useful for games that can use the canvas to draw for examples UI's.
+
 h2. Building.
 
-@./waf configure --build-deps=True@
-@./waf@
+The only supported platform at the moment is OS X, and you need both boost and cmake installed to
+be able to build the project.
 
-* This will download and build both Skia and V8, and then build the canvas library.
-* At the moment it is OS X on!
+To build the dependencies Skia and V8 execute the following command:
+@./deps/fetch_and_build.sh@
+
+Create a build folder, this step is optional, but it's encouraged. It makes cleaning up a lot easier, especially because cmake creates a lot of files all over the place:
+@mkdir build@
+@cd build@
+
+Generate makefiles for the project:
+@cmake -DCMAKE_BUILD_TYPE=Debug ..@
+
+Compile:
+@make@
+
+When this is done, the demo application can be located and started from the @build/bin@ directory.
+@./build/bin/demo@
 
 h2. License
 
