@@ -1,8 +1,8 @@
 h1. Canvas++
 
-An implementation of the javascript canvas api, written in C++.
+An implementation of the JavaScript canvas api, written in C++.
 
-Modern browsers that support HTML5 comes with a handy element called the canvas. It provides a surface that can be drawn upon using Javascript. Using this canvas all sorts of things can be created.
+Modern browsers that support HTML5 comes with a handy element called the canvas. It provides a surface that can be drawn upon using JavaScript. Using this canvas all sorts of things can be created.
 
 This library makes it possible to embed such a canvas into another application. This is especially useful for games that can use the canvas to draw for examples UI's.
 
@@ -25,6 +25,23 @@ Compile:
 
 When this is done, the demo application can be located and started from the @build/bin@ directory.
 @./build/bin/demo@
+
+h2. JavaScript API
+
+There are some differences between the HTML5 canvas api and canvas++. Most notably is the @getContext()@ function. Instead of calling it on the canvas dom element, it's located on the window object. So we need to call @window.getContext('2d')@.
+
+The same apply to the @width@ and @height@ attributes. Instead of being located on the dom element, they are accessed through the window object, @window.width@ and @window.height@.
+
+h3. Window Object
+
+Accessed through the global @window@ object.
+
+* @getContext(<string>)@ - Returns the graphics context. The argument must be '2d'.
+* @setInterval(<function>)@ - Register a function that will be called when the canvas should repaint itself. Returns an integer identifying the callback function.
+* @clearInterval(<number>)@ - Removes the callback function with the corresponding id.
+* @log(<string>)@ - Output a string to the log system.
+* @width@ - Attribute that stores the width of the window.
+* @height@ - Attribute that stores the height of the window.
 
 h2. License
 
