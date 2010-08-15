@@ -30,7 +30,7 @@ namespace canvas
    {
    }
    
-   void Context::copyImageTo(unsigned char * target)
+   void Context::copyImageTo(void * target)
    {
       void * source = m_bitmap->getPixels();
       memcpy(target, source, m_bitmap->getSize());

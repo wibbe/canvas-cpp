@@ -20,7 +20,7 @@ namespace canvas
          Context(int width, int height);
          ~Context();
          
-         void copyImageTo(unsigned char * target);
+         void copyImageTo(void * target);
          
          // Transformations
          void scale(float x, float y);
