@@ -32,11 +32,15 @@ A simple example that creates a threaded canvas and loads a JavaScript.
 
 bc. Canvas * canvas = new Canvas(800, 600, Canvas::kARGB, true);
 canvas->loadFile("...");
-  
-bc. void * imageData; // Should point to our target image.
-  
+
+We need to have some target that our canvas should paint to. This could for example be a @SDL_Surface@.
+
+bc. void * imageTarget = ...;
+
+Then we ask the canvas to paint into our target.
+
 bc. if (canvas->isDirty())
-  canvas->paint(imageData);
+  canvas->paint(imageTarget);
 
 
 h2. JavaScript API
