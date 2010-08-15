@@ -21,7 +21,7 @@ namespace canvas
          ~Canvas();
          
          /// Loads a script from file and executes it.
-         void loadScript(std::string const& filename);
+         void loadFile(std::string const& filename);
          
          /// Loads and executes javascript code.
          void loadCode(std::string const& code);
@@ -32,7 +32,7 @@ namespace canvas
          /// Paint the canvas to the supplied image data.
          /// Note that the image format is 32-bits per pixel
          /// organized in ARGB.
-         void paint(unsigned char * imageData);
+         void paint(void * imageData);
          
          /// Pops and returns the last javascript log entry.
          /// Returns the empty string if no log entires exists.

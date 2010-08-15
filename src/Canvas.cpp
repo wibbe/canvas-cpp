@@ -18,6 +18,8 @@ namespace canvas
          
          void run()
          {
+            m_painter->start();
+            
             while (m_running)
             {
                m_painter->draw();
@@ -81,18 +83,21 @@ namespace canvas
    
    bool Canvas::isDirty() const
    {
-      return false;
+      return true;
    }
    
-   void Canvas::paint(unsigned char * imageData)
+   void Canvas::paint(void * imageData)
    {
+      assert(imageData && "No image data supplied to paint method.");
+      assert(m_data->painter && "Must load a javascript before any painting is performed.");
+      
       if (!m_data->threaded)
          m_data->painter->draw();
 
       m_data->painter->copyImageTo(imageData);
    }
    
-   void Canvas::loadScript(std::string const& filename)
+   void Canvas::loadFile(std::string const& filename)
    {
       assert(!m_data->painter && "Only one script per canvas is allowed!");
       
@@ -100,6 +105,8 @@ namespace canvas
       
       if (m_data->threaded)
          m_data->thread = new CanvasThread(m_data->painter);
+      else
+         m_data->painter->start();
    }
    
    void Canvas::loadCode(std::string const& code)
@@ -110,6 +117,8 @@ namespace canvas
       
       if (m_data->threaded)
          m_data->thread = new CanvasThread(m_data->painter);
+      else
+         m_data->painter->start();
    }
    
    std::string Canvas::lastLogEntry()
