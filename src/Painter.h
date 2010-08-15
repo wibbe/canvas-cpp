@@ -55,6 +55,14 @@ namespace canvas
          
          v8::Handle<v8::Value> getContext(std::string const& type);
          
+         int width() const { return m_width; }
+         /// Only here because binding system must have a get/set pair.
+         void setWidth(int);
+         
+         int height() const { return m_height; }
+         /// Only here because binding system must have a get/set pair.
+         void setHeight(int);
+         
          /// Store a string in the log history.
          void log(std::string const& log);
          

@@ -78,16 +78,6 @@ namespace canvas
       }
    }
    
-   void Context::setWidth(int)
-   {
-      assert(0 && "Invalid operation, not allowed to set width!");
-   }
-         
-   void Context::setHeight(int)
-   {
-      assert(0 && "Invalid operation, not allowed to set height!");
-   }
-   
    float Context::lineWidth() const
    {
       return currentState().lineWidth;

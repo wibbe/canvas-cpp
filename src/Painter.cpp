@@ -58,7 +58,9 @@ namespace canvas
       m_windowBinding->function("setInterval", &Painter::setInterval)
                       .function("clearInterval", &Painter::clearInterval)
                       .function("getContext", &Painter::getContext)
-                      .function("log", &Painter::log);
+                      .function("log", &Painter::log)
+                      .attribute("width", &Painter::width, &Painter::setWidth)
+                      .attribute("height", &Painter::height, &Painter::setHeight);
       
       m_contextBinding = new binding::Object<Context>("Context");
       m_contextBinding->function("scale", &Context::scale)
@@ -71,8 +73,6 @@ namespace canvas
                        .function("fillRect", &Context::fillRect)
                        .function("strokeRect", &Context::strokeRect)
                        .function("clear", &Context::clear)
-                       .attribute("width", &Context::width, &Context::setWidth)
-                       .attribute("height", &Context::height, &Context::setHeight)
                        .attribute("lineWidth", &Context::lineWidth, &Context::setLineWidth)
                        .attribute("lineCap", &Context::lineCap, &Context::setLineCap)
                        .attribute("strokeStyle", &Context::strokeStyle, &Context::setStrokeStyle)
@@ -99,6 +99,16 @@ namespace canvas
    {
       delete m_script;
       delete m_context;
+   }
+   
+   void Painter::setWidth(int)
+   {
+      assert(0 && "Invalid operation, not allowed to set width!");
+   }
+         
+   void Painter::setHeight(int)
+   {
+      assert(0 && "Invalid operation, not allowed to set height!");
    }
    
    void Painter::draw()

@@ -48,14 +48,6 @@ namespace canvas
          
          void copyImageTo(void * target);
          
-         int width() const { return m_width; }
-         /// Only here because binding system must have a get/set pair.
-         void setWidth(int);
-         
-         int height() const { return m_height; }
-         /// Only here because binding system must have a get/set pair.
-         void setHeight(int);
-         
          // Styles
          float lineWidth() const;
          void setLineWidth(float width);
