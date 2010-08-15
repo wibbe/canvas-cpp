@@ -34,7 +34,7 @@ bc. Canvas * canvas = new Canvas(800, 600, Canvas::kARGB, true);
 canvas->loadFile("...");
 //canvas->loadCode("..."); We can just as well supply a string containing code.
 
-Tt is only possible to call either @loadFile("...")@ or @loadCode("...")@ once. The second call to one of the functions will throw an assert.
+It is only possible to call either @loadFile("...")@ or @loadCode("...")@ once. The second call to one of the functions will throw an assert.
 
 We need to have some target that our canvas should paint to. This could for example be a @SDL_Surface@.
 
