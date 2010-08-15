@@ -55,20 +55,22 @@ namespace canvas
       // Create bindings
       m_windowBinding = new binding::Object<Painter>("Window");
       m_windowBinding->function("setInterval", &Painter::setInterval)
-                     .function("clearInterval", &Painter::clearInterval)
-                     .function("getContext", &Painter::getContext)
-                     .function("log", &Painter::log);
+                      .function("clearInterval", &Painter::clearInterval)
+                      .function("getContext", &Painter::getContext)
+                      .function("log", &Painter::log);
       
       m_contextBinding = new binding::Object<Context>("Context");
       m_contextBinding->function("scale", &Context::scale)
-                      .function("rotate", &Context::rotate)
-                      .function("translate", &Context::translate)
-                      .function("beginPath", &Context::beginPath)
-                      .function("closePath", &Context::closePath)
-                      .function("moveTo", &Context::moveTo)
-                      .function("lineTo", &Context::lineTo)
-                      .function("fillRect", &Context::fillRect)
-                      .function("strokeRect", &Context::strokeRect);
+                       .function("rotate", &Context::rotate)
+                       .function("translate", &Context::translate)
+                       .function("beginPath", &Context::beginPath)
+                       .function("closePath", &Context::closePath)
+                       .function("moveTo", &Context::moveTo)
+                       .function("lineTo", &Context::lineTo)
+                       .function("fillRect", &Context::fillRect)
+                       .function("strokeRect", &Context::strokeRect)
+                       .attribute("lineWidth", &Context::lineWidth, &Context::setLineWidth)
+                       .attribute("lineCap", &Context::lineCap, &Context::setLineCap);
       
       v8::Context::Scope contextScope(jsContext);
       
