@@ -28,10 +28,13 @@ When this is done, the demo application can be located and started from the @bui
 
 h2. Example
 
-A simple example that creates a threaded canvas and loads a JavaScript.
+A simple example that creates a threaded canvas and load a JavaScript file.
 
 bc. Canvas * canvas = new Canvas(800, 600, Canvas::kARGB, true);
 canvas->loadFile("...");
+//canvas->loadCode("..."); We can just as well supply a string containing code.
+
+Tt is only possible to call either @loadFile("...")@ or @loadCode("...")@ once. The second call to one of the functions will throw an assert.
 
 We need to have some target that our canvas should paint to. This could for example be a @SDL_Surface@.
 
