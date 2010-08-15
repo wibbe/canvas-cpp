@@ -26,6 +26,20 @@ Compile:
 When this is done, the demo application can be located and started from the @build/bin@ directory.
 @./build/bin/demo@
 
+h2. Example
+
+A simple example that creates a threaded canvas and loads a JavaScript.
+
+@
+  Canvas * canvas = new Canvas(800, 600, Canvas::kARGB, true);
+  canvas->loadFile("...");
+  
+  void * imageData; // Should point to our target image.
+  
+  if (canvas->isDirty())
+    canvas->paint(imageData);
+@
+
 h2. JavaScript API
 
 There are some differences between the HTML5 canvas api and Canvas++. Most notably is the @getContext()@ function. Instead of calling it on the canvas dom element, it's located on the window object. So we need to call @window.getContext('2d')@.
@@ -40,8 +54,8 @@ Accessed through the global @window@ object.
 * @setInterval(<function>)@ - Register a function that will be called when the canvas should repaint itself. Returns an integer identifying the callback function.
 * @clearInterval(<number>)@ - Removes the callback function with the corresponding id.
 * @log(<string>)@ - Output a string to the log system.
-* @width@ - Attribute that stores the width of the window.
-* @height@ - Attribute that stores the height of the window.
+* @width@ - The width of the window.
+* @height@ - The height of the window.
 
 h2. License
 
