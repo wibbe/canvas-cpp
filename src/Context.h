@@ -62,6 +62,10 @@ namespace canvas
          std::string lineCap() const;
          void setLineCap(std::string const& cap);
          
+         std::string strokeStyle() const;
+         void setStrokeStyle(std::string const& style);
+         std::string fillStyle() const;
+         void setFillStyle(std::string const& style);         
          
          // Transformations
          void scale(float x, float y);

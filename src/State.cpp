@@ -37,5 +37,6 @@ namespace canvas
          return SkPaint::kSquare_Cap;
       return SkPaint::kButt_Cap;
    }
+   
 }
 

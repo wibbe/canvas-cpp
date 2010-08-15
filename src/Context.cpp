@@ -93,6 +93,32 @@ namespace canvas
       m_strokePaint.setStrokeCap(currentState().skiaCap());
    }
    
+   std::string Context::strokeStyle() const
+   {
+      return currentState().strokeStyleString;
+   }
+   
+   void Context::setStrokeStyle(std::string const& style)
+   {
+      State & state = currentState();
+      state.strokeStyleString = style;
+      state.strokeStyle = m_parser.parse(style);
+      m_strokePaint.setColor(state.strokeStyle.toSkia());
+   }
+   
+   std::string Context::fillStyle() const
+   {
+      return currentState().fillStyleString;
+   }
+   
+   void Context::setFillStyle(std::string const& style)
+   {
+      State & state = currentState();
+      state.fillStyleString = style;
+      state.fillStyle = m_parser.parse(style);
+      m_fillPaint.setColor(state.fillStyle.toSkia());
+   }
+   
    void Context::scale(float x, float y)
    {
       m_canvas->scale(x, y);

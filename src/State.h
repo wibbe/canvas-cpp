@@ -26,6 +26,8 @@
 #include <core/SkPaint.h>
 #include <string>
 
+#include "Color.h"
+
 namespace canvas
 {
    class State
@@ -35,6 +37,10 @@ namespace canvas
          
          float lineWidth;
          std::string lineCapString;
+         std::string strokeStyleString;
+         std::string fillStyleString;
+         Color strokeStyle;
+         Color fillStyle;
          
          SkPaint::Cap skiaCap() const;
    };  
