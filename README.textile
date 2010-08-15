@@ -30,15 +30,14 @@ h2. Example
 
 A simple example that creates a threaded canvas and loads a JavaScript.
 
-@
-  Canvas * canvas = new Canvas(800, 600, Canvas::kARGB, true);
-  canvas->loadFile("...");
+bc. Canvas * canvas = new Canvas(800, 600, Canvas::kARGB, true);
+canvas->loadFile("...");
   
-  void * imageData; // Should point to our target image.
+bc. void * imageData; // Should point to our target image.
   
-  if (canvas->isDirty())
-    canvas->paint(imageData);
-@
+bc. if (canvas->isDirty())
+  canvas->paint(imageData);
+
 
 h2. JavaScript API
 
