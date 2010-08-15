@@ -1,4 +1,4 @@
-h1. canvas-cpp
+h1. Canvas++
 
 An implementation of the javascript canvas api, written in C++.
 
@@ -6,7 +6,7 @@ Modern browsers that support HTML5 comes with a handy element called the canvas.
 
 This library makes it possible to embed such a canvas into another application. This is especially useful for games that can use the canvas to draw for examples UI's.
 
-h2. Building.
+h2. Building
 
 The only supported platform at the moment is OS X, and you need both boost and cmake installed to be able to build the project.
 
