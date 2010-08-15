@@ -96,6 +96,20 @@ namespace binding {
             return *this;
          }
          
+         template <typename GetT, typename SetT>
+         Object<T> & attribute(std::string const& name, GetT get, SetT set)
+         {
+            v8::Handle<v8::ObjectTemplate> instaTempl = m_functionTemplate->InstanceTemplate();
+            
+            BaseAttribute * attrib = new AttributeCallback<T, GetT, SetT>(get, set);
+            
+            instaTempl->SetAccessor(v8::String::New(name.c_str()), 
+                                    attributeGetCallback, 
+                                    attributeSetCallback, 
+                                    v8::External::Wrap(attrib));
+            return *this;
+         }
+         
          template <typename AttribT>
          Object<T> & getter(std::string const& name, AttribT T::*ptr)
          {

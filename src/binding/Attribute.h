@@ -25,6 +25,7 @@
 
 #include "v8.h"
 #include "Translate.h"
+#include "FunctionInfo.h"
 
 namespace binding {
 
@@ -65,6 +66,36 @@ namespace binding {
          
       private:
          Ptr m_ptr;
+   };
+   
+   template <typename ObjectT, typename GetT, typename SetT>
+   class AttributeCallback : public BaseAttribute
+   {
+         typedef typename FunctionInfo<GetT>::Return  ReturnType;
+         typedef typename TL::TypeAtNonStrict<typename FunctionInfo<SetT>::Params, EmptyType, 0>::Result SetType;
+      
+      public:
+         AttributeCallback(GetT getMethod, SetT setMethod)
+            : m_getMethod(getMethod),
+              m_setMethod(setMethod)
+         { }
+
+         virtual v8::Handle<v8::Value> get(v8::AccessorInfo const& info)
+         {
+            ObjectT * object = Object<ObjectT>::unwrap(info.Holder());
+            
+            return Translate<ReturnType>::from(((*object).*m_getMethod)());
+         }
+      
+         virtual void set(v8::Handle<v8::Value> const& value, v8::AccessorInfo const& info)
+         {
+            ObjectT * object = Object<ObjectT>::unwrap(info.Holder());
+            ((*object).*m_setMethod)(Translate<SetType>::to(value));
+         }
+      
+      private:
+         GetT m_getMethod;
+         SetT m_setMethod;
    };
 
 }
