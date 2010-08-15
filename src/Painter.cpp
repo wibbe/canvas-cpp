@@ -10,11 +10,19 @@ namespace canvas
    Painter::Painter(int width, int height, std::string const&  fileOrCode, bool isFile)
       : m_painterMutex(),
         m_logMutex(),
+        m_width(width),
+        m_height(height),
+        m_fileOrCode(fileOrCode),
+        m_isFile(isFile),
         m_script(0),
         m_context(0),
         m_callbackIndex(0),
         m_windowBinding(0),
         m_contextBinding(0)
+   {
+   }
+   
+   void Painter::start()
    {
       v8::HandleScope scope;
       
@@ -47,14 +55,14 @@ namespace canvas
       jsContext->Global()->Set(v8::String::New("window"), m_windowBinding->wrap(this));
                      
       // Create graphics context
-      m_context = new Context(width, height);
+      m_context = new Context(m_width, m_height);
       
       // Create javascript object
       m_script = new Script(jsContext);
-      if (isFile)
-         m_script->load(fileOrCode);
+      if (m_isFile)
+         m_script->load(m_fileOrCode);
       else
-         m_script->runString(fileOrCode);
+         m_script->runString(m_fileOrCode);
    }
    
    Painter::~Painter()
@@ -83,15 +91,15 @@ namespace canvas
          if (result.IsEmpty())
          {
             v8::String::Utf8Value error(tryCatch.Exception());
-            std::cerr << "Script Error: " << *error << std::endl;
+            std::cerr << "Script runtime error: " << *error << std::endl;
          }
       }
    }
    
-   void Painter::copyImageTo(unsigned char * target)
+   void Painter::copyImageTo(void * target)
    {
       ScopedLock lock(m_painterMutex);
-      if (target)
+      if (target && m_context)
          m_context->copyImageTo(target);
    }
    
@@ -128,7 +136,7 @@ namespace canvas
       if (m_history.size() > 1000)
          m_history.pop_front();
          
-      std::cerr << log << std::endl;
+      //std::cerr << log << std::endl;
    }
    
    std::string Painter::lastLogEntry()

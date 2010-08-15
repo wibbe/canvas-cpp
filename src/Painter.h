@@ -22,9 +22,11 @@ namespace canvas
          Painter(int width, int height, std::string const& fileOrCode, bool isFile = true);
          ~Painter();
          
+         void start();
+         
          void draw();
          
-         void copyImageTo(unsigned char * target);
+         void copyImageTo(void * target);
          
          int setInterval(v8::Handle<v8::Function> const& function);
          void clearInterval(int index);
@@ -41,6 +43,12 @@ namespace canvas
       private:
          Mutex m_painterMutex;
          Mutex m_logMutex;
+         
+         int m_width;
+         int m_height;
+         std::string m_fileOrCode;
+         bool m_isFile;
+         
          Script * m_script;
          Context * m_context;
          
