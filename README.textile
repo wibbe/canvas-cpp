@@ -8,8 +8,7 @@ This library makes it possible to embed such a canvas into another application. 
 
 h2. Building.
 
-The only supported platform at the moment is OS X, and you need both boost and cmake installed to
-be able to build the project.
+The only supported platform at the moment is OS X, and you need both boost and cmake installed to be able to build the project.
 
 To build the dependencies Skia and V8 execute the following command:
 @./deps/fetch_and_build.sh@
