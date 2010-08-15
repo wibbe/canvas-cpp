@@ -109,13 +109,13 @@ namespace canvas
    
    void Canvas::paint(void * imageData)
    {
-      assert(imageData && "No image data supplied to paint method.");
       assert(m_data->painter && "Must load a javascript before any painting is performed.");
       
       if (!m_data->threaded)
          m_data->painter->draw();
 
-      m_data->painter->copyImageTo(imageData);
+      if (imageData)
+         m_data->painter->copyImageTo(imageData);
    }
    
    void Canvas::loadFile(std::string const& filename)
