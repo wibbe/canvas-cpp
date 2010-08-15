@@ -72,7 +72,9 @@ namespace canvas
                        .attribute("width", &Context::width, &Context::setWidth)
                        .attribute("height", &Context::height, &Context::setHeight)
                        .attribute("lineWidth", &Context::lineWidth, &Context::setLineWidth)
-                       .attribute("lineCap", &Context::lineCap, &Context::setLineCap);
+                       .attribute("lineCap", &Context::lineCap, &Context::setLineCap)
+                       .attribute("strokeStyle", &Context::strokeStyle, &Context::setStrokeStyle)
+                       .attribute("fillStyle", &Context::fillStyle, &Context::setFillStyle);
       
       v8::Context::Scope contextScope(jsContext);
       
