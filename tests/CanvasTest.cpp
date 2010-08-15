@@ -106,5 +106,16 @@ namespace tut
       canvas->loadCode("var ctx = window.getContext('2d'); ctx.lineCap = 'round'; window.log(ctx.lineCap);");
       ensure(canvas->lastLogEntry() == "round");
    }
+   
+   template <>
+   template <>
+   void object::test<9>()
+   {
+      set_test_name("Javascript Test 8: width/height attributes");
+      
+      canvas->loadCode("var ctx = window.getContext('2d'); window.log(ctx.width); window.log(ctx.height);");
+      ensure(canvas->lastLogEntry() == "100");
+      ensure(canvas->lastLogEntry() == "100");
+   }
 }
 
