@@ -26,13 +26,14 @@
 namespace canvas
 {
    
-   Context::Context(int width, int height)
+   Context::Context(int width, int height, Canvas::Format format)
       : m_bitmap(0),
         m_device(0),
         m_canvas(0),
         m_parser(),
         m_width(width),
-        m_height(height)
+        m_height(height),
+        m_format(format)
    {
       m_bitmap = new SkBitmap();
       m_bitmap->setConfig(SkBitmap::kARGB_8888_Config, width, height);
@@ -58,7 +59,23 @@ namespace canvas
    void Context::copyImageTo(void * target)
    {
       void * source = m_bitmap->getPixels();
-      memcpy(target, source, m_bitmap->getSize());
+      
+      if (m_format == Canvas::kRGBA)
+      {
+         unsigned char * targetData = static_cast<unsigned char*>(target);
+         unsigned char * sourceData = static_cast<unsigned char*>(source);
+         for (size_t i = 0; i < m_bitmap->getSize(); i += 4)
+         {
+            targetData[i + 0] = sourceData[i + 1];
+            targetData[i + 1] = sourceData[i + 2];
+            targetData[i + 2] = sourceData[i + 3];
+            targetData[i + 3] = sourceData[i + 0];
+         }
+      }
+      else
+      {
+         memcpy(target, source, m_bitmap->getSize());
+      }
    }
    
    void Context::setWidth(int)
@@ -119,6 +136,18 @@ namespace canvas
       m_fillPaint.setColor(state.fillStyle.toSkia());
    }
    
+   float Context::globalAlpha() const
+   {
+      return currentState().globalAlpha;
+   }
+   
+   void Context::setGlobalAlpha(float alpha)
+   {
+      currentState().globalAlpha = alpha;
+      m_strokePaint.setAlpha(alpha * 255);
+      m_fillPaint.setAlpha(alpha * 255);
+   }
+   
    void Context::scale(float x, float y)
    {
       m_canvas->scale(x, y);
@@ -177,6 +206,11 @@ namespace canvas
    void Context::strokeRect(float x, float y, float width, float height)
    {
       m_canvas->drawRect(SkRect::MakeXYWH(x, y, width, height), m_strokePaint);
+   }
+   
+   void Context::clear()
+   {
+      m_bitmap->eraseARGB(0, 0, 0, 0);
    }
 }
 

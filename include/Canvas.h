@@ -38,7 +38,13 @@ namespace canvas
          Canvas & operator = (Canvas const& other);
          
       public:
-         Canvas(int width, int height, bool threaded = true);
+         enum Format
+         {
+            kARGB,   //!< Default format
+            kRGBA    //!< If this format is used, an internal byte swap will be performed on every paint() call.
+         };
+         
+         Canvas(int width, int height, Format format = kARGB, bool threaded = true);
          ~Canvas();
          
          /// Loads a script from file and executes it.

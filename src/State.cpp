@@ -26,7 +26,12 @@ namespace canvas
 {
    State::State()
       : lineWidth(1.0f),
-        lineCapString("butt")
+        lineCapString("butt"),
+        strokeStyleString("black"),
+        fillStyleString("black"),
+        strokeStyle(Color(0, 0, 0)),
+        fillStyle(Color(0, 0, 0)),
+        globalAlpha(1.0f)
    { }
    
    SkPaint::Cap State::skiaCap() const

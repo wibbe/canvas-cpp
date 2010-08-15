@@ -33,6 +33,7 @@
 #include <cassert>
 
 #include "State.h"
+#include "Canvas.h"
 #include "ColorParser.h"
 
 namespace canvas
@@ -42,7 +43,7 @@ namespace canvas
    class Context
    {
       public:
-         Context(int width, int height);
+         Context(int width, int height, Canvas::Format format);
          ~Context();
          
          void copyImageTo(void * target);
@@ -65,7 +66,10 @@ namespace canvas
          std::string strokeStyle() const;
          void setStrokeStyle(std::string const& style);
          std::string fillStyle() const;
-         void setFillStyle(std::string const& style);         
+         void setFillStyle(std::string const& style);
+         
+         float globalAlpha() const;
+         void setGlobalAlpha(float alpha);
          
          // Transformations
          void scale(float x, float y);
@@ -86,6 +90,8 @@ namespace canvas
          void fillRect(float x, float y, float width, float height);
          void strokeRect(float x, float y, float width, float height);
          
+         void clear();
+         
       private:
          inline State & currentState() { return m_stateStack.back(); }
          inline State const& currentState() const { return m_stateStack.back(); }
@@ -103,6 +109,7 @@ namespace canvas
          
          int m_width;
          int m_height;
+         Canvas::Format m_format;
          
          std::list<State> m_stateStack;
    };

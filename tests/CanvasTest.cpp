@@ -9,7 +9,7 @@ namespace tut
    struct CanvasData
    {
       CanvasData()
-         : canvas(new Canvas(100, 100, false))
+         : canvas(new Canvas(100, 100, Canvas::kARGB, false))
       { }
       
       ~CanvasData()

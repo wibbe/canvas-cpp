@@ -37,10 +37,13 @@ namespace canvas
          
          float lineWidth;
          std::string lineCapString;
+         
          std::string strokeStyleString;
          std::string fillStyleString;
          Color strokeStyle;
          Color fillStyle;
+         
+         float globalAlpha;
          
          SkPaint::Cap skiaCap() const;
    };  

@@ -30,6 +30,7 @@
 #include "Script.h"
 #include "Context.h"
 #include "Callback.h"
+#include "Canvas.h"
 #include "util/Mutex.h"
 #include "binding/Object.h"
 
@@ -40,7 +41,7 @@ namespace canvas
          typedef std::map<int, Callback> CallbackMap;
          
       public:
-         Painter(int width, int height, std::string const& fileOrCode, bool isFile = true);
+         Painter(int width, int height, Canvas::Format format, std::string const& fileOrCode, bool isFile = true);
          ~Painter();
          
          void start();
@@ -67,6 +68,7 @@ namespace canvas
          
          int m_width;
          int m_height;
+         Canvas::Format m_format;
          std::string m_fileOrCode;
          bool m_isFile;
          

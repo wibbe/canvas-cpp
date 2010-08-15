@@ -58,6 +58,7 @@ namespace canvas
          CanvasData()
             : width(0),
               height(0),
+              format(Canvas::kARGB),
               threaded(false),
               painter(0),
               thread(0)
@@ -76,17 +77,19 @@ namespace canvas
          
          int width;
          int height;
+         Canvas::Format format;
          bool threaded;
          Painter * painter;
          Thread * thread;
    };
    
    
-   Canvas::Canvas(int width, int height, bool threaded)
+   Canvas::Canvas(int width, int height, Format format, bool threaded)
       : m_data(new CanvasData())
    {
       m_data->width = width;
       m_data->height = height;
+      m_data->format = format;
       m_data->threaded = threaded;
    }
 
@@ -122,7 +125,7 @@ namespace canvas
    {
       assert(!m_data->painter && "Only one script per canvas is allowed!");
       
-      m_data->painter = new Painter(m_data->width, m_data->height, filename);
+      m_data->painter = new Painter(m_data->width, m_data->height, m_data->format, filename);
       
       if (m_data->threaded)
          m_data->thread = new CanvasThread(m_data->painter);
@@ -134,7 +137,7 @@ namespace canvas
    {
       assert(!m_data->painter && "Only one script per canvas is allowed!");
       
-      m_data->painter = new Painter(m_data->width, m_data->height, code, false);
+      m_data->painter = new Painter(m_data->width, m_data->height, m_data->format, code, false);
       
       if (m_data->threaded)
          m_data->thread = new CanvasThread(m_data->painter);

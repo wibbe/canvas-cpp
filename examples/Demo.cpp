@@ -61,7 +61,7 @@ int main(int argc, char * argv[])
    SDL_WM_SetCaption("Canvas++ Demo", 0);
    
    // Create the canvas
-   Canvas * canvas = new Canvas(800, 500, true);
+   Canvas * canvas = new Canvas(800, 500, Canvas::kRGBA, true);
    canvas->loadFile(locateDemoJavaScript());
    
    // Create a sdl surface that will act like a target for the canvas

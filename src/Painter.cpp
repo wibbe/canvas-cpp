@@ -28,11 +28,12 @@
 namespace canvas
 {
    
-   Painter::Painter(int width, int height, std::string const&  fileOrCode, bool isFile)
+   Painter::Painter(int width, int height, Canvas::Format format, std::string const&  fileOrCode, bool isFile)
       : m_painterMutex(),
         m_logMutex(),
         m_width(width),
         m_height(height),
+        m_format(format),
         m_fileOrCode(fileOrCode),
         m_isFile(isFile),
         m_script(0),
@@ -69,12 +70,14 @@ namespace canvas
                        .function("lineTo", &Context::lineTo)
                        .function("fillRect", &Context::fillRect)
                        .function("strokeRect", &Context::strokeRect)
+                       .function("clear", &Context::clear)
                        .attribute("width", &Context::width, &Context::setWidth)
                        .attribute("height", &Context::height, &Context::setHeight)
                        .attribute("lineWidth", &Context::lineWidth, &Context::setLineWidth)
                        .attribute("lineCap", &Context::lineCap, &Context::setLineCap)
                        .attribute("strokeStyle", &Context::strokeStyle, &Context::setStrokeStyle)
-                       .attribute("fillStyle", &Context::fillStyle, &Context::setFillStyle);
+                       .attribute("fillStyle", &Context::fillStyle, &Context::setFillStyle)
+                       .attribute("globalAlpha", &Context::globalAlpha, &Context::setGlobalAlpha);
       
       v8::Context::Scope contextScope(jsContext);
       
@@ -82,7 +85,7 @@ namespace canvas
       jsContext->Global()->Set(v8::String::New("window"), m_windowBinding->wrap(this));
                      
       // Create graphics context
-      m_context = new Context(m_width, m_height);
+      m_context = new Context(m_width, m_height, m_format);
       
       // Create javascript object
       m_script = new Script(jsContext);
