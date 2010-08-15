@@ -86,5 +86,25 @@ namespace tut
       canvas->loadCode("window.log(window.getContext('2d') != undefined ? 'True' : 'False')");
       ensure(canvas->lastLogEntry() == "True");
    }
+   
+   template <>
+   template <>
+   void object::test<7>()
+   {
+      set_test_name("Javascript Test 6: Test attribute lineWidth");
+      
+      canvas->loadCode("var ctx = window.getContext('2d'); ctx.lineWidth = 2.0; window.log(ctx.lineWidth);");
+      ensure(canvas->lastLogEntry() == "2");
+   }
+   
+   template <>
+   template <>
+   void object::test<8>()
+   {
+      set_test_name("Javascript Test 7: Test attribute lineCap");
+      
+      canvas->loadCode("var ctx = window.getContext('2d'); ctx.lineCap = 'round'; window.log(ctx.lineCap);");
+      ensure(canvas->lastLogEntry() == "round");
+   }
 }
 
