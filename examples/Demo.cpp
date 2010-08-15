@@ -99,6 +99,8 @@ int main(int argc, char * argv[])
          SDL_UnlockSurface(target);
       }
       
+      SDL_BlitSurface(target, 0, screen, 0);
+      
       // Print log
       for (std::string log = canvas->lastLogEntry(); log != ""; log = canvas->lastLogEntry())
       //while ((std::string log = canvas->lastLogEntry()) != "")
