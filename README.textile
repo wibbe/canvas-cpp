@@ -4,7 +4,7 @@ An implementation of the JavaScript canvas api, written in C++.
 
 Modern browsers that support HTML5 comes with a handy element called the canvas. It provides a surface that can be drawn upon using JavaScript. Using this canvas all sorts of things can be created.
 
-This library makes it possible to embed such a canvas into another application. This is especially useful for games that can use the canvas to draw for examples UI's.
+This library makes it possible to embed such a canvas into another application. This is especially useful for games that can use the canvas to draw it's UI's.
 
 h2. Building
 
