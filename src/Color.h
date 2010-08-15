@@ -24,6 +24,7 @@
 #define CANVAS_COLOR_HEADER
 
 #include <cmath>
+#include <core/SkColor.h>
 
 namespace canvas
 {
@@ -67,6 +68,13 @@ namespace canvas
                    std::abs(a - other.a) < 1e-5f;
          }
          
+         SkColor toSkia() const
+         {
+            SkColorSetARGB((int)(a * 255), 
+                           (int)(r * 255),
+                           (int)(g * 255),
+                           (int)(b * 255));
+         }
          
          float r, g, b, a;
    };
