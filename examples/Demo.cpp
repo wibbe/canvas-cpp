@@ -50,6 +50,12 @@ int main(int argc, char * argv[])
 {
    bool running = true;
    
+   if (argc < 2)
+   {
+      std::cout << "Usage: demo <javascript>" << std::endl;
+      return 0;
+   }
+   
    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
    {
       std::cerr << "Could not initialize SDL" << std::endl;
@@ -62,7 +68,7 @@ int main(int argc, char * argv[])
    
    // Create the canvas
    Canvas * canvas = new Canvas(800, 500, Canvas::kRGBA, true);
-   canvas->loadFile(locateDemoJavaScript());
+   canvas->loadFile(argv[1]);
    
    // Create a sdl surface that will act like a target for the canvas
    SDL_Surface * target = SDL_CreateRGBSurface(SDL_SWSURFACE, 800, 500, 32, 0x00FF0000, 
