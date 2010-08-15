@@ -21,6 +21,7 @@
  */
 
 #include "Context.h"
+#include <iostream>
 
 namespace canvas
 {
@@ -45,6 +46,9 @@ namespace canvas
       m_fillPaint.setStyle(SkPaint::kFill_Style);
       m_strokePaint.setAntiAlias(true);
       m_strokePaint.setStyle(SkPaint::kStroke_Style);
+      
+      // Initialize with default state
+      m_stateStack.push_back(State());
    }
    
    Context::~Context()
@@ -55,6 +59,26 @@ namespace canvas
    {
       void * source = m_bitmap->getPixels();
       memcpy(target, source, m_bitmap->getSize());
+   }
+   
+   float Context::lineWidth() const
+   {
+      return currentState().lineWidth;
+   }
+   
+   void Context::setLineWidth(float width)
+   {
+      currentState().lineWidth = width;
+   }
+   
+   std::string Context::lineCap() const
+   {
+      return currentState().lineCapString;
+   }
+   
+   void Context::setLineCap(std::string const& cap)
+   {
+      currentState().lineCapString = cap;
    }
    
    void Context::scale(float x, float y)

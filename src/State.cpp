@@ -25,7 +25,8 @@
 namespace canvas
 {
    State::State()
-   {
-   }
+      : lineWidth(1.0f),
+        lineCapString("butt")
+   { }
 }
 

@@ -23,15 +23,18 @@
 #ifndef CANVAS_STATE_HEADER
 #define CANVAS_STATE_HEADER
 
+#include <string>
+
 namespace canvas
 {
-   
    class State
    {
       public:
          State();
-   };
-   
+         
+         float lineWidth;
+         std::string lineCapString;
+   };  
 }
 
 #endif

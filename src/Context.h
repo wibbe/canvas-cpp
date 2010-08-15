@@ -29,6 +29,9 @@
 #include <core/SkPath.h>
 #include <core/SkPaint.h>
 
+#include <list>
+
+#include "State.h"
 #include "ColorParser.h"
 
 namespace canvas
@@ -42,6 +45,14 @@ namespace canvas
          ~Context();
          
          void copyImageTo(void * target);
+         
+         // Styles
+         float lineWidth() const;
+         void setLineWidth(float width);
+         
+         std::string lineCap() const;
+         void setLineCap(std::string const& cap);
+         
          
          // Transformations
          void scale(float x, float y);
@@ -61,9 +72,12 @@ namespace canvas
          
          void fillRect(float x, float y, float width, float height);
          void strokeRect(float x, float y, float width, float height);
+         
+      private:
+         inline State & currentState() { return m_stateStack.back(); }
+         inline State const& currentState() const { return m_stateStack.back(); }
         
       private:
-         
          SkBitmap * m_bitmap;
          SkDevice * m_device;
          SkCanvas * m_canvas;
@@ -76,6 +90,8 @@ namespace canvas
          
          int m_width;
          int m_height;
+         
+         std::list<State> m_stateStack;
    };
    
 }
