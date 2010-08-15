@@ -61,6 +61,16 @@ namespace canvas
       memcpy(target, source, m_bitmap->getSize());
    }
    
+   void Context::setWidth(int)
+   {
+      assert(0 && "Invalid operation, not allowed to set width!");
+   }
+         
+   void Context::setHeight(int)
+   {
+      assert(0 && "Invalid operation, not allowed to set height!");
+   }
+   
    float Context::lineWidth() const
    {
       return currentState().lineWidth;
@@ -68,6 +78,7 @@ namespace canvas
    
    void Context::setLineWidth(float width)
    {
+      m_strokePaint.setStrokeWidth(width);
       currentState().lineWidth = width;
    }
    
@@ -79,6 +90,7 @@ namespace canvas
    void Context::setLineCap(std::string const& cap)
    {
       currentState().lineCapString = cap;
+      m_strokePaint.setStrokeCap(currentState().skiaCap());
    }
    
    void Context::scale(float x, float y)

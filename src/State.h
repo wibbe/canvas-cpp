@@ -23,6 +23,7 @@
 #ifndef CANVAS_STATE_HEADER
 #define CANVAS_STATE_HEADER
 
+#include <core/SkPaint.h>
 #include <string>
 
 namespace canvas
@@ -34,6 +35,8 @@ namespace canvas
          
          float lineWidth;
          std::string lineCapString;
+         
+         SkPaint::Cap skiaCap() const;
    };  
 }
 

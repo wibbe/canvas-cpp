@@ -28,5 +28,14 @@ namespace canvas
       : lineWidth(1.0f),
         lineCapString("butt")
    { }
+   
+   SkPaint::Cap State::skiaCap() const
+   {
+      if (lineCapString == "round")
+         return SkPaint::kRound_Cap;
+      else if (lineCapString == "square")
+         return SkPaint::kSquare_Cap;
+      return SkPaint::kButt_Cap;
+   }
 }
 
