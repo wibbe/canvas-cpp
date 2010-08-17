@@ -72,7 +72,7 @@ namespace canvas
          void translate(float x, float y);
          
          // Image function
-         void drawImage(v8::Handle<v8::Value> image, float x, float y, float width, float height);
+         void drawImage(v8::Handle<v8::Value> image, float x, float y);
          
          // Path functions
          void beginPath();
@@ -93,6 +93,8 @@ namespace canvas
       private:
          inline State & currentState() { return m_stateStack.back(); }
          inline State const& currentState() const { return m_stateStack.back(); }
+         
+         void syncPaintWithState();
         
       private:
          SkBitmap * m_bitmap;

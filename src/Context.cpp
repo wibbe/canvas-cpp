@@ -52,6 +52,7 @@ namespace canvas
       
       // Initialize with default state
       m_stateStack.push_back(State());
+      syncPaintWithState();
    }
    
    Context::~Context()
@@ -155,11 +156,13 @@ namespace canvas
       m_canvas->translate(x, y);
    }
    
-   void Context::drawImage(v8::Handle<v8::Value> value, float x, float y, float width, float height)
+   void Context::drawImage(v8::Handle<v8::Value> value, float x, float y)
    {
       assert(value->IsObject() && "Trying to paint with non ImageData object!");
       
       ImageData * image = binding::Object<ImageData>::unwrap(value->ToObject());
+      
+      m_canvas->drawBitmap(image->bitmap(), x, y, &m_fillPaint);
    }
    
    void Context::beginPath()
@@ -210,6 +213,19 @@ namespace canvas
    void Context::clear()
    {
       m_bitmap->eraseARGB(0, 0, 0, 0);
+   }
+   
+   void Context::syncPaintWithState()
+   {
+      State const& state = currentState();
+      
+      m_fillPaint.setColor(state.fillStyle.toSkia());
+      m_fillPaint.setAlpha(state.globalAlpha * 255);
+      
+      m_strokePaint.setColor(state.strokeStyle.toSkia());
+      m_strokePaint.setAlpha(state.globalAlpha * 255);
+      m_strokePaint.setStrokeWidth(state.lineWidth);
+      m_strokePaint.setStrokeCap(state.skiaCap());
    }
 }
 

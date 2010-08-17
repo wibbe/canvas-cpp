@@ -42,6 +42,8 @@ namespace canvas
          void setWidth(int);
          void setHeight(int);
          
+         SkBitmap const& bitmap() const { return *m_bitmap; }
+         
       private:
          SkBitmap * m_bitmap;
          Canvas::Format m_format;

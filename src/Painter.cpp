@@ -76,6 +76,8 @@ namespace canvas
                        .function("lineTo", &Context::lineTo)
                        .function("fillRect", &Context::fillRect)
                        .function("strokeRect", &Context::strokeRect)
+                       .function("fill", &Context::fill)
+                       .function("stroke", &Context::stroke)
                        .function("clear", &Context::clear)
                        .attribute("lineWidth", &Context::lineWidth, &Context::setLineWidth)
                        .attribute("lineCap", &Context::lineCap, &Context::setLineCap)
@@ -191,8 +193,6 @@ namespace canvas
          return;
       }
       
-      std::cerr << "Registering '" << name << "': " << image << std::endl;
-      
       m_images.insert(std::make_pair(name, image));
    }
    
@@ -204,8 +204,6 @@ namespace canvas
       std::map<std::string, ImageData*>::iterator result = m_images.find(name);
       if (result == m_images.end())
          return v8::Undefined();
-         
-      std::cerr << "Accessing '" << result->first << "': " << result->second << std::endl;
          
       return scope.Close(m_imageDataBinding->wrap(result->second));
    }
