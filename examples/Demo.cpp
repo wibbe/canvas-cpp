@@ -69,7 +69,7 @@ int main(int argc, char * argv[])
    SDL_WM_SetCaption("Canvas++ Demo", 0);
    
    // Create the canvas
-   Canvas * canvas = new Canvas(800, 500, Canvas::kRGBA, false);
+   Canvas * canvas = new Canvas(800, 500, Canvas::kRGBA, true);
    
    // Parse arguments
    for (int i = 1; i < argc; ++i)
