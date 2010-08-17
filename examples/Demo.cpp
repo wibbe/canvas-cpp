@@ -21,6 +21,8 @@
  */
 
 #include <SDL.h>
+#include <SDL_image.h>
+
 #include <iostream>
 #include <fstream>
 #include <Canvas.h>
@@ -52,7 +54,7 @@ int main(int argc, char * argv[])
    
    if (argc < 2)
    {
-      std::cout << "Usage: demo <javascript>" << std::endl;
+      std::cout << "Usage: demo (-i <image-path>) <javascript>" << std::endl;
       return 0;
    }
    
@@ -67,8 +69,40 @@ int main(int argc, char * argv[])
    SDL_WM_SetCaption("Canvas++ Demo", 0);
    
    // Create the canvas
-   Canvas * canvas = new Canvas(800, 500, Canvas::kRGBA, true);
-   canvas->loadFile(argv[1]);
+   Canvas * canvas = new Canvas(800, 500, Canvas::kRGBA, false);
+   
+   // Parse arguments
+   for (int i = 1; i < argc; ++i)
+   {
+      std::string arg(argv[i]);
+      if (arg == "-i" && (i + 1) < argc)
+      {
+         SDL_Surface * image = IMG_Load(argv[i + 1]);
+         if (!image)
+         {
+            std::cerr << "Could not load image: " << argv[i + 1] << std::endl;
+         }
+         else
+         {
+            if (image->format->BitsPerPixel == 32)
+            {
+               std::cerr << "Loaded image (" << image->w << "x" << image->h << "): " << argv[i + 1] << std::endl;
+               canvas->registerImage(argv[i + 1], image->w, image->h, Canvas::kRGBA, image->pixels);
+            }
+            else
+            {
+               std::cerr << "Image '" << argv[i + 1] << "' has the wrong format (" << (int)image->format->BitsPerPixel << ")" << std::endl;
+            }
+            
+            SDL_FreeSurface(image);
+         }
+         
+         i++;
+      }
+   }
+   
+   // Last argument must be the script file
+   canvas->startWithFile(argv[argc - 1]);
    
    // Create a sdl surface that will act like a target for the canvas
    SDL_Surface * target = SDL_CreateRGBSurface(SDL_SWSURFACE, 800, 500, 32, 0x00FF0000, 

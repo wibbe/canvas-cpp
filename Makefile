@@ -9,7 +9,7 @@ compile:
 	make -C build
 	
 run:
-	(cd build/bin && ./demo ../../examples/Demo.js)
+	(./build/bin/demo -i examples/logo.png examples/Demo.js)
 	
 test:
 	(cd build/bin && ./unit_test)

@@ -8,6 +8,7 @@ SET(LIBRARIES
   skia
   v8
   ${SDL_LIBRARY}
+  ${SDLIMAGE_LIBRARY}
 )
               
 IF(APPLE)
