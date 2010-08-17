@@ -48,10 +48,13 @@ namespace canvas
          ~Canvas();
          
          /// Loads a script from file and executes it.
-         void loadFile(std::string const& filename);
+         void startWithFile(std::string const& filename);
          
-         /// Loads and executes javascript code.
-         void loadCode(std::string const& code);
+         /// Loads and executes the supplied javascript code.
+         void startWithCode(std::string const& code);
+         
+         /// Register image data with the canvas, it can later be accessed from javascript.
+         void registerImage(std::string const& name, int width, int height, Format format, void * data);
          
          /// Returns true if the canvas should be rendered.
          bool isDirty() const;

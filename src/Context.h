@@ -29,12 +29,15 @@
 #include <core/SkPath.h>
 #include <core/SkPaint.h>
 
+#include <v8.h>
+
 #include <list>
 #include <cassert>
 
 #include "State.h"
 #include "Canvas.h"
 #include "ColorParser.h"
+#include "ImageData.h"
 
 namespace canvas
 {
@@ -67,6 +70,9 @@ namespace canvas
          void scale(float x, float y);
          void rotate(float angle);
          void translate(float x, float y);
+         
+         // Image function
+         void drawImage(v8::Handle<v8::Value> image, float x, float y, float width, float height);
          
          // Path functions
          void beginPath();

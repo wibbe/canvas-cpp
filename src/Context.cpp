@@ -21,6 +21,9 @@
  */
 
 #include "Context.h"
+#include "CopyPixelHelper.h"
+#include "binding/Object.h"
+
 #include <iostream>
 
 namespace canvas
@@ -151,6 +154,13 @@ namespace canvas
    void Context::translate(float x, float y)
    {
       m_canvas->translate(x, y);
+   }
+   
+   void Context::drawImage(v8::Handle<v8::Value> value, float x, float y, float width, float height)
+   {
+      assert(value->IsObject() && "Trying to paint with non ImageData object!");
+      
+      ImageData * image = binding::Object<ImageData>::unwrap(value->ToObject());
    }
    
    void Context::beginPath()

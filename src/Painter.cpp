@@ -28,23 +28,24 @@
 namespace canvas
 {
    
-   Painter::Painter(int width, int height, Canvas::Format format, std::string const&  fileOrCode, bool isFile)
+   Painter::Painter(int width, int height, Canvas::Format format)
       : m_painterMutex(),
+        m_imageMutex(),
         m_logMutex(),
         m_width(width),
         m_height(height),
         m_format(format),
-        m_fileOrCode(fileOrCode),
-        m_isFile(isFile),
         m_script(0),
         m_context(0),
         m_callbackIndex(0),
         m_windowBinding(0),
-        m_contextBinding(0)
+        m_consoleBinding(0),
+        m_contextBinding(0),
+        m_imageDataBinding(0)
    {
    }
    
-   void Painter::start()
+   void Painter::start(std::string const& fileOrCode, bool isFile)
    {
       v8::HandleScope scope;
       
@@ -52,20 +53,23 @@ namespace canvas
       m_scriptTemplate = v8::Persistent<v8::ObjectTemplate>::New(v8::ObjectTemplate::New());
       v8::Local<v8::Context> jsContext = v8::Local<v8::Context>::New(v8::Context::New(0, m_scriptTemplate));
 
-      
       // Create bindings
       m_windowBinding = new binding::Object<Painter>("Window");
       m_windowBinding->function("setInterval", &Painter::setInterval)
                       .function("clearInterval", &Painter::clearInterval)
                       .function("getContext", &Painter::getContext)
-                      .function("log", &Painter::log)
+                      .function("getImage", &Painter::getImage)
                       .attribute("width", &Painter::width, &Painter::setWidth)
                       .attribute("height", &Painter::height, &Painter::setHeight);
+                      
+      m_consoleBinding = new binding::Object<Painter>("Console");
+      m_consoleBinding->function("log", &Painter::log);
       
       m_contextBinding = new binding::Object<Context>("Context");
       m_contextBinding->function("scale", &Context::scale)
                        .function("rotate", &Context::rotate)
                        .function("translate", &Context::translate)
+                       .function("drawImage", &Context::drawImage)
                        .function("beginPath", &Context::beginPath)
                        .function("closePath", &Context::closePath)
                        .function("moveTo", &Context::moveTo)
@@ -78,27 +82,36 @@ namespace canvas
                        .attribute("strokeStyle", &Context::strokeStyle, &Context::setStrokeStyle)
                        .attribute("fillStyle", &Context::fillStyle, &Context::setFillStyle)
                        .attribute("globalAlpha", &Context::globalAlpha, &Context::setGlobalAlpha);
+                       
+      m_imageDataBinding = new binding::Object<ImageData>("ImageData");
+      m_imageDataBinding->attribute("width", &ImageData::width, &ImageData::setWidth)
+                         .attribute("height", &ImageData::height, &ImageData::setHeight);
       
       v8::Context::Scope contextScope(jsContext);
       
       // Inject the window object
       jsContext->Global()->Set(v8::String::New("window"), m_windowBinding->wrap(this));
+      jsContext->Global()->Set(v8::String::New("console"), m_consoleBinding->wrap(this));
                      
       // Create graphics context
       m_context = new Context(m_width, m_height, m_format);
       
       // Create javascript object
       m_script = new Script(jsContext);
-      if (m_isFile)
-         m_script->load(m_fileOrCode);
+      if (isFile)
+         m_script->load(fileOrCode);
       else
-         m_script->runString(m_fileOrCode);
+         m_script->runString(fileOrCode);
    }
    
    Painter::~Painter()
    {
       delete m_script;
       delete m_context;
+      delete m_imageDataBinding;
+      delete m_contextBinding;
+      delete m_consoleBinding;
+      delete m_windowBinding;
    }
    
    void Painter::setWidth(int)
@@ -164,6 +177,37 @@ namespace canvas
       
       std::cerr << "Error: Requested wrong context type '" << type << "'" << std::endl;
       return v8::Undefined();
+   }
+   
+   void Painter::registerImage(std::string const& name, ImageData * image)
+   {
+      assert(image);
+      ScopedLock lock(m_imageMutex);
+      
+      std::map<std::string, ImageData*>::iterator result = m_images.find(name);
+      if (result != m_images.end())
+      {
+         std::cerr << "Failed to register image '" << name << "'. Image with the same name present!" << std::endl;
+         return;
+      }
+      
+      std::cerr << "Registering '" << name << "': " << image << std::endl;
+      
+      m_images.insert(std::make_pair(name, image));
+   }
+   
+   v8::Handle<v8::Value> Painter::getImage(std::string const& name)
+   {
+      ScopedLock lock(m_imageMutex);
+      v8::HandleScope scope;
+      
+      std::map<std::string, ImageData*>::iterator result = m_images.find(name);
+      if (result == m_images.end())
+         return v8::Undefined();
+         
+      std::cerr << "Accessing '" << result->first << "': " << result->second << std::endl;
+         
+      return scope.Close(m_imageDataBinding->wrap(result->second));
    }
    
    void Painter::log(std::string const& log)

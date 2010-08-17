@@ -32,14 +32,16 @@ namespace canvas
    class CanvasThread : public Thread
    {
       public:
-         CanvasThread(Painter * painter)
+         CanvasThread(Painter * painter, std::string fileOrCode, bool isFile)
             : Thread(),
-              m_painter(painter)
+              m_painter(painter),
+              m_fileOrCode(fileOrCode),
+              m_isFile(isFile)
          { }
          
          void run()
          {
-            m_painter->start();
+            m_painter->start(m_fileOrCode, m_isFile);
             
             while (m_running)
             {
@@ -49,6 +51,8 @@ namespace canvas
       
       private:
          Painter * m_painter;
+         std::string m_fileOrCode;
+         bool m_isFile;
    };
    
    /// Holds all private data for the Canvas class.
@@ -56,10 +60,8 @@ namespace canvas
    {
       public:
          CanvasData()
-            : width(0),
-              height(0),
-              format(Canvas::kARGB),
-              threaded(false),
+            : threaded(false),
+              started(false),
               painter(0),
               thread(0)
          { }
@@ -75,10 +77,8 @@ namespace canvas
             delete painter;
          }
          
-         int width;
-         int height;
-         Canvas::Format format;
          bool threaded;
+         bool started;
          Painter * painter;
          Thread * thread;
    };
@@ -87,10 +87,8 @@ namespace canvas
    Canvas::Canvas(int width, int height, Format format, bool threaded)
       : m_data(new CanvasData())
    {
-      m_data->width = width;
-      m_data->height = height;
-      m_data->format = format;
       m_data->threaded = threaded;
+      m_data->painter = new Painter(width, height, format);
    }
 
    Canvas::Canvas(Canvas const& other)
@@ -112,7 +110,7 @@ namespace canvas
    
    void Canvas::paint(void * imageData)
    {
-      assert(m_data->painter && "Must load a javascript before any painting is performed.");
+      assert(m_data->started && "Must load a javascript before any painting is performed.");
       
       if (!m_data->threaded)
          m_data->painter->draw();
@@ -121,28 +119,35 @@ namespace canvas
          m_data->painter->copyImageTo(imageData);
    }
    
-   void Canvas::loadFile(std::string const& filename)
+   void Canvas::startWithFile(std::string const& filename)
    {
-      assert(!m_data->painter && "Only one script per canvas is allowed!");
+      assert(!m_data->started && "Only one script per canvas is allowed!");
       
-      m_data->painter = new Painter(m_data->width, m_data->height, m_data->format, filename);
+      m_data->started = true;
       
       if (m_data->threaded)
-         m_data->thread = new CanvasThread(m_data->painter);
+         m_data->thread = new CanvasThread(m_data->painter, filename, true);
       else
-         m_data->painter->start();
+         m_data->painter->start(filename, true);
    }
    
-   void Canvas::loadCode(std::string const& code)
+   void Canvas::startWithCode(std::string const& code)
    {
-      assert(!m_data->painter && "Only one script per canvas is allowed!");
+      assert(!m_data->started && "Only one script per canvas is allowed!");
       
-      m_data->painter = new Painter(m_data->width, m_data->height, m_data->format, code, false);
+      m_data->started = true;
       
       if (m_data->threaded)
-         m_data->thread = new CanvasThread(m_data->painter);
+         m_data->thread = new CanvasThread(m_data->painter, code, false);
       else
-         m_data->painter->start();
+         m_data->painter->start(code, false);
+   }
+   
+   void Canvas::registerImage(std::string const& name, int width, int height, Format format, void * data)
+   {
+      assert(m_data->painter);
+      
+      m_data->painter->registerImage(name, new ImageData(data, width, height, format));
    }
    
    std::string Canvas::lastLogEntry()

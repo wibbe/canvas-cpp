@@ -6,6 +6,7 @@ SET(SOURCE
   Painter.cpp
   Script.cpp
   State.cpp
+  ImageData.cpp
   util/Mutex.cpp
   util/ScopedLock.cpp
   util/Thread.cpp

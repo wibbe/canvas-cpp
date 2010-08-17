@@ -31,6 +31,7 @@
 #include "Context.h"
 #include "Callback.h"
 #include "Canvas.h"
+#include "ImageData.h"
 #include "util/Mutex.h"
 #include "binding/Object.h"
 
@@ -41,10 +42,10 @@ namespace canvas
          typedef std::map<int, Callback> CallbackMap;
          
       public:
-         Painter(int width, int height, Canvas::Format format, std::string const& fileOrCode, bool isFile = true);
+         Painter(int width, int height, Canvas::Format format);
          ~Painter();
          
-         void start();
+         void start(std::string const& fileOrCode, bool isFile = true);
          
          void draw();
          
@@ -54,6 +55,9 @@ namespace canvas
          void clearInterval(int index);
          
          v8::Handle<v8::Value> getContext(std::string const& type);
+         
+         void registerImage(std::string const& name, ImageData * image);
+         v8::Handle<v8::Value> getImage(std::string const& name);
          
          int width() const { return m_width; }
          /// Only here because binding system must have a get/set pair.
@@ -72,16 +76,17 @@ namespace canvas
          
       private:
          Mutex m_painterMutex;
+         Mutex m_imageMutex;
          Mutex m_logMutex;
          
          int m_width;
          int m_height;
          Canvas::Format m_format;
-         std::string m_fileOrCode;
-         bool m_isFile;
          
          Script * m_script;
          Context * m_context;
+         
+         std::map<std::string, ImageData *> m_images;
          
          /// Stores the log history
          std::list<std::string> m_history;
@@ -90,7 +95,9 @@ namespace canvas
          int m_callbackIndex;
          
          binding::Object<Painter> * m_windowBinding;
+         binding::Object<Painter> * m_consoleBinding;
          binding::Object<Context> * m_contextBinding;
+         binding::Object<ImageData> * m_imageDataBinding;
          
          v8::Persistent<v8::ObjectTemplate> m_scriptTemplate;
    };
