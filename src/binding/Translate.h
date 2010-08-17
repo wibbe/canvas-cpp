@@ -274,21 +274,7 @@ namespace binding {
          return value;
       }
    };
-/*   
-   template <typename T>
-   struct Translate
-   {
-      static T * to(v8::Handle<v8::Value> const& value)
-      {
-         return Object<T>::unwrap(value);
-      }
-      
-      static v8::Handle<v8::Value> from(T * value)
-      {
-         return Object<T>::wrap(value);
-      } 
-   };
-*/
+
 }
 
 #endif
