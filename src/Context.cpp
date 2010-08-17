@@ -21,7 +21,6 @@
  */
 
 #include "Context.h"
-#include "CopyPixelHelper.h"
 #include "binding/Object.h"
 
 #include <iostream>
