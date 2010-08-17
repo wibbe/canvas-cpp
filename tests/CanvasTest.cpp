@@ -36,16 +36,16 @@ namespace tut
    {
       set_test_name("Javascript Test 1");
       
-      canvas->loadCode("");
+      canvas->startWithCode("");
    }
    
    template <>
    template <>
    void object::test<3>()
    {
-      set_test_name("Javascript Test 2: window.log()");
+      set_test_name("Javascript Test 2: console.log()");
       
-      canvas->loadCode("window.log(\"Hello, World!\")");
+      canvas->startWithCode("console.log(\"Hello, World!\")");
       ensure(canvas->lastLogEntry() == "Hello, World!");
    }
    
@@ -55,7 +55,7 @@ namespace tut
    {
       set_test_name("Javascript Test 3: window.setInterval()");
       
-      canvas->loadCode("window.setInterval(function() { window.log(\"Hello, World!\"); });");
+      canvas->startWithCode("window.setInterval(function() { console.log(\"Hello, World!\"); });");
       ensure(canvas->lastLogEntry() == "");
       
       canvas->paint(0);
@@ -73,7 +73,7 @@ namespace tut
    {
       set_test_name("Javascript Test 4: window.getContext('')");
       
-      canvas->loadCode("window.log(window.getContext('') == undefined ? 'True' : 'False')");
+      canvas->startWithCode("console.log(window.getContext('') == undefined ? 'True' : 'False')");
       ensure(canvas->lastLogEntry() == "True");
    }
    
@@ -83,7 +83,7 @@ namespace tut
    {
       set_test_name("Javascript Test 5: window.getContext('2d')");
       
-      canvas->loadCode("window.log(window.getContext('2d') != undefined ? 'True' : 'False')");
+      canvas->startWithCode("console.log(window.getContext('2d') != undefined ? 'True' : 'False')");
       ensure(canvas->lastLogEntry() == "True");
    }
    
@@ -93,7 +93,7 @@ namespace tut
    {
       set_test_name("Javascript Test 6: Test attribute lineWidth");
       
-      canvas->loadCode("var ctx = window.getContext('2d'); ctx.lineWidth = 2.0; window.log(ctx.lineWidth);");
+      canvas->startWithCode("var ctx = window.getContext('2d'); ctx.lineWidth = 2.0; console.log(ctx.lineWidth);");
       ensure(canvas->lastLogEntry() == "2");
    }
    
@@ -103,7 +103,7 @@ namespace tut
    {
       set_test_name("Javascript Test 7: Test attribute lineCap");
       
-      canvas->loadCode("var ctx = window.getContext('2d'); ctx.lineCap = 'round'; window.log(ctx.lineCap);");
+      canvas->startWithCode("var ctx = window.getContext('2d'); ctx.lineCap = 'round'; console.log(ctx.lineCap);");
       ensure(canvas->lastLogEntry() == "round");
    }
    
@@ -113,7 +113,7 @@ namespace tut
    {
       set_test_name("Javascript Test 8: width/height attributes");
       
-      canvas->loadCode("var ctx = window.getContext('2d'); window.log(ctx.width); window.log(ctx.height);");
+      canvas->startWithCode("console.log(window.width); console.log(window.height);");
       ensure(canvas->lastLogEntry() == "100");
       ensure(canvas->lastLogEntry() == "100");
    }
