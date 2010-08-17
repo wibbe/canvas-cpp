@@ -31,10 +31,10 @@ h2. Example
 A simple example that creates a threaded canvas and load a JavaScript file.
 
 bc. Canvas * canvas = new Canvas(800, 600, Canvas::kARGB, true);
-canvas->loadFile("...");
-//canvas->loadCode("..."); We can just as well supply a string containing code.
+canvas->startWithFile("...");
+//canvas->startWithCode("..."); We can just as well supply a string containing code.
 
-It is only possible to call either @loadFile("...")@ or @loadCode("...")@ once. The second call to one of the functions will throw an assert.
+It is only possible to call either @startWithFile("...")@ or @startWithCode("...")@ once. The second call to one of the functions will throw an assert.
 
 We need to have some target that our canvas should paint to. This could for example be a @SDL_Surface@.
 
@@ -59,9 +59,14 @@ Accessed through the global @window@ object.
 * @getContext(<string>)@ - Returns the graphics context. The only valid context is '2d'.
 * @setInterval(<function>)@ - Register a function that will be called when the canvas should repaint itself. Returns an integer identifying the callback function.
 * @clearInterval(<number>)@ - Removes the callback function with the corresponding id.
-* @log(<string>)@ - Output a string to the log system.
 * @width@ - The width of the window.
 * @height@ - The height of the window.
+
+h3. Console Object
+
+Accessed through the global @console@ object.
+
+* @log(<string>)@ - Output a string to the log system.
 
 h2. License
 
