@@ -33,6 +33,7 @@
 #include "Canvas.h"
 #include "ImageData.h"
 #include "util/Mutex.h"
+#include "util/Timer.h"
 #include "binding/Object.h"
 
 namespace canvas
@@ -51,7 +52,7 @@ namespace canvas
          
          void copyImageTo(void * target);
          
-         int setInterval(v8::Handle<v8::Function> const& function);
+         int setInterval(v8::Handle<v8::Function> const& function, int interval);
          void clearInterval(int index);
          
          v8::Handle<v8::Value> getContext(std::string const& type);
@@ -78,6 +79,8 @@ namespace canvas
          Mutex m_painterMutex;
          Mutex m_imageMutex;
          Mutex m_logMutex;
+         
+         Timer m_timer;
          
          int m_width;
          int m_height;

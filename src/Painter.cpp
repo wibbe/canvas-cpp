@@ -108,6 +108,8 @@ namespace canvas
          m_script->load(fileOrCode);
       else
          m_script->runString(fileOrCode);
+         
+      m_timer.reset();
    }
    
    Painter::~Painter()
@@ -142,11 +144,14 @@ namespace canvas
       CallbackMap::iterator it = m_callbacks.begin();
       CallbackMap::iterator end = m_callbacks.end();
       
+      double dt = m_timer.seconds();
+      m_timer.reset();
+      
       for (; it != end; ++it)
       {
          Callback & callback = it->second;
          
-         v8::Handle<v8::Value> result = callback.call();
+         v8::Handle<v8::Value> result = callback.call(dt);
          if (result.IsEmpty())
          {
             v8::String::Utf8Value error(tryCatch.Exception());
@@ -162,9 +167,9 @@ namespace canvas
          m_context->copyImageTo(target);
    }
    
-   int Painter::setInterval(v8::Handle<v8::Function> const& function)
+   int Painter::setInterval(v8::Handle<v8::Function> const& function, int interval)
    {
-      m_callbacks.insert(std::make_pair(++m_callbackIndex, Callback(function)));
+      m_callbacks.insert(std::make_pair(++m_callbackIndex, Callback(function, interval)));
       return m_callbackIndex;
    }
    
