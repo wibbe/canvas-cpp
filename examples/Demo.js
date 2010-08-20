@@ -15,12 +15,15 @@
       ctx.fillRect(10, 10, 100, 100);
    
       ctx.drawImage(img, 120, 10);
+      ctx.drawImage(img, 120, 74, 64, 32);
       
       ctx.beginPath();
       ctx.moveTo(200, 200);
-      //ctx.lineTo(300, 200);
-      ctx.arcTo(300, 200, 400, 500, 300);
-      //ctx.lineTo(350, 400);
+      ctx.lineTo(300, 200);
+      ctx.quadraticCurveTo(300, 300, 200, 300);
+      
+      ctx.rect(700, 10, 90, 90);
+      
       ctx.closePath();
       
       ctx.strokeStyle = 'white';

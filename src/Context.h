@@ -72,7 +72,8 @@ namespace canvas
          void translate(float x, float y);
          
          // Image function
-         void drawImage(v8::Handle<v8::Value> image, float x, float y);
+         void drawImage(ImageData * image, float x, float y, float width, float height);
+         static v8::Handle<v8::Value> drawImageCallback(v8::Arguments const& args);
          
          // Path functions
          void beginPath();
@@ -85,7 +86,12 @@ namespace canvas
          void moveTo(float x, float y);
          void lineTo(float x, float y);
          
+         void quadraticCurveTo(float cpx, float cpy, float x, float y);
+         void bezierCurveTo(float cp1x, float cp1y, float cp2x, float cp2y, float x, float y);
+         
          void arcTo(float x1, float y1, float x2, float y2, float radius);
+         
+         void rect(float x, float y, float width, float height);
          
          void fillRect(float x, float y, float width, float height);
          void strokeRect(float x, float y, float width, float height);

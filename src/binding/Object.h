@@ -74,7 +74,7 @@ namespace binding {
          }
          
          /// Make it posible to bind 'ordinary' v8 callback functions.
-         Object<T> & function(std::string const& name, v8::InvocationCallback callback)
+         Object<T> & functionV8(std::string const& name, v8::InvocationCallback callback)
          {
             v8::Handle<v8::ObjectTemplate> protoTempl = m_functionTemplate->PrototypeTemplate();
             protoTempl->Set(v8::String::New(name.c_str()), v8::FunctionTemplate::New(callback));

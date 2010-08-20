@@ -211,7 +211,7 @@ namespace binding {
                               typename Parent::Param1 p1, typename Parent::Param2 p2, typename Parent::Param3 p3, 
                               typename Parent::Param4 p4, typename Parent::Param5 p5, typename Parent::Param6 p6)
       {
-         return ((*object).*m_method)(p1, p2, p3, p4, p5);
+         return ((*object).*m_method)(p1, p2, p3, p4, p5, p6);
       }
       
       MethodT m_method;

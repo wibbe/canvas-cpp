@@ -156,13 +156,29 @@ namespace canvas
       m_canvas->translate(x, y);
    }
    
-   void Context::drawImage(v8::Handle<v8::Value> value, float x, float y)
+   void Context::drawImage(ImageData * image, float x, float y, float width, float height)
    {
-      assert(value->IsObject() && "Trying to paint with non ImageData object!");
+      m_canvas->drawBitmapRect(image->bitmap(), 0, SkRect::MakeLTRB(x, y, x + width, y + height), &m_fillPaint);
+   }
+   
+   v8::Handle<v8::Value> Context::drawImageCallback(v8::Arguments const& args)
+   {
+      int len = args.Length();
+      assert((len == 3 || len == 5) && "Wrong number or arguments to drawImage");
       
-      ImageData * image = binding::Object<ImageData>::unwrap(value->ToObject());
+      v8::HandleScope scope;
+      Context * self = binding::Object<Context>::unwrap(args.Holder());
+      ImageData * image = binding::Object<ImageData>::unwrap(args[0]->ToObject());
       
-      m_canvas->drawBitmap(image->bitmap(), x, y, &m_fillPaint);
+      assert(self && image);
+      
+      float x = binding::Translate<float>::to(args[1]);
+      float y = binding::Translate<float>::to(args[2]);
+      float width = len == 3 ? static_cast<float>(image->width()) : binding::Translate<float>::to(args[3]);
+      float height = len == 3 ? static_cast<float>(image->height()) : binding::Translate<float>::to(args[4]);
+      
+      self->drawImage(image, x, y, width, height);
+      return v8::Undefined();
    }
    
    void Context::beginPath()
@@ -200,10 +216,25 @@ namespace canvas
       m_path.lineTo(x, y);
    }
    
+   void Context::quadraticCurveTo(float cpx, float cpy, float x, float y)
+   {
+      m_path.quadTo(cpx, cpy, x, y);
+   }
+   
+   void Context::bezierCurveTo(float cp1x, float cp1y, float cp2x, float cp2y, float x, float y)
+   {
+      m_path.cubicTo(cp1x, cp1y, cp2x, cp2y, x, y);
+   }
+   
    void Context::arcTo(float x1, float y1, float x2, float y2, float radius)
    {
       m_path.arcTo(x1, y1, x2, y2, radius);
-   }      
+   }
+   
+   void Context::rect(float x, float y, float width, float height)
+   {
+      m_path.addRect(x, y, x + width, y + height);
+   }
    
    void Context::fillRect(float x, float y, float width, float height)
    {
