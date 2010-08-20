@@ -6,9 +6,9 @@
    var img = window.getImage("examples/logo.png");
    
    if (ctx && img)
-      window.setInterval(paint);
+      window.setInterval(paint, 50); // paint in 20Hz
       
-   function paint() {
+   function paint() {      
       ctx.clear();
       ctx.fillStyle = 'rgb(255, 100, 50)';
       ctx.globalAlpha = 0.5;
