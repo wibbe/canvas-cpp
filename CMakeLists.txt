@@ -56,7 +56,7 @@ LINK_DIRECTORIES(
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(tests)
 
-IF (SDL_FOUND OR SDL_image_FOUND)
+IF (SDL_FOUND OR SDLIMAGE_FOUND)
   ADD_SUBDIRECTORY(examples)
 ELSE()
   MESSAGE("Could not find SDL or SDL_image, so the demo application will not be compiled.")
