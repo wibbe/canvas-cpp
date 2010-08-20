@@ -17,9 +17,13 @@ SET(LIBRARIES
   skia
   v8
 )
-              
+
 IF(APPLE)
   LIST(APPEND LIBRARIES ${Carbon_FRAMEWORK})
+  LIST(APPEND LIBRARIES ${Cacoa_FRAMEWORK})
+  LIST(APPEND SOURCE util/Timer.mm)
+ELSE()
+  LIST(APPEND SOURCE util/Timer.cpp)
 ENDIF()
 
 ADD_LIBRARY(canvas ${SOURCE})
