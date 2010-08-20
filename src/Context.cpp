@@ -167,7 +167,7 @@ namespace canvas
    
    void Context::beginPath()
    {
-      m_path.reset();
+      m_path.rewind();
    }
    
    void Context::closePath()
@@ -199,6 +199,11 @@ namespace canvas
    {
       m_path.lineTo(x, y);
    }
+   
+   void Context::arcTo(float x1, float y1, float x2, float y2, float radius)
+   {
+      m_path.arcTo(x1, y1, x2, y2, radius);
+   }      
    
    void Context::fillRect(float x, float y, float width, float height)
    {

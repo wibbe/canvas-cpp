@@ -85,6 +85,8 @@ namespace canvas
          void moveTo(float x, float y);
          void lineTo(float x, float y);
          
+         void arcTo(float x1, float y1, float x2, float y2, float radius);
+         
          void fillRect(float x, float y, float width, float height);
          void strokeRect(float x, float y, float width, float height);
          

@@ -74,6 +74,7 @@ namespace canvas
                        .function("closePath", &Context::closePath)
                        .function("moveTo", &Context::moveTo)
                        .function("lineTo", &Context::lineTo)
+                       .function("arcTo", &Context::arcTo)
                        .function("fillRect", &Context::fillRect)
                        .function("strokeRect", &Context::strokeRect)
                        .function("fill", &Context::fill)

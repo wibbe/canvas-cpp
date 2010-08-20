@@ -18,8 +18,9 @@
       
       ctx.beginPath();
       ctx.moveTo(200, 200);
-      ctx.lineTo(300, 200);
-      ctx.lineTo(350, 350);
+      //ctx.lineTo(300, 200);
+      ctx.arcTo(300, 200, 400, 500, 300);
+      //ctx.lineTo(350, 400);
       ctx.closePath();
       
       ctx.strokeStyle = 'white';
