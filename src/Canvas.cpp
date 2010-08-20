@@ -26,6 +26,7 @@
 #include "util/Thread.h"
 
 #include <cassert>
+#include <unistd.h>
 
 namespace canvas
 {
@@ -46,6 +47,9 @@ namespace canvas
             while (m_running)
             {
                m_painter->draw();
+               
+               // Sleep 1 milisecond so we don't hog all the cpu power.
+               usleep(1000);
             };
          }
       
