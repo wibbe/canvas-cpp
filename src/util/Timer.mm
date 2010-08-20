@@ -25,7 +25,6 @@
 #import "Timer.h"
 #import <Cocoa/Cocoa.h>
 
-
 namespace canvas
 {
    Timer::Timer()
@@ -45,5 +44,7 @@ namespace canvas
    }
 }
 
+#else
+#  error Should not compile Timer.mm on any other platform than OS X.
 #endif
 
