@@ -40,7 +40,7 @@ namespace canvas
       public:
          enum Format
          {
-            kARGB,   //!< Default format
+            kARGB,   //!< Default format, 32-bits per pixel in (alpha, red, blue, green) configuration.
             kRGBA    //!< If this format is used, an internal byte swap will be performed on every paint() call.
          };
          
