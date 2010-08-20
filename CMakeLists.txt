@@ -11,8 +11,7 @@ SET(V8_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/v8")
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-SET(BOOST_COMPONENTS "xpressive")
-
+# Always build with debug symbols for now.
 LIST(APPEND CMAKE_CXX_FLAGS -g)
 
 IF(UNIX)
@@ -56,8 +55,9 @@ LINK_DIRECTORIES(
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(tests)
 
+# We need SDL and SDL_image to be able to build the demo application
 IF (SDL_FOUND OR SDLIMAGE_FOUND)
   ADD_SUBDIRECTORY(examples)
 ELSE()
-  MESSAGE("Could not find SDL or SDL_image, so the demo application will not be compiled.")
+  MESSAGE("Demo will not be built, because SDL and/or SDL_image could not be found.")
 ENDIF()
