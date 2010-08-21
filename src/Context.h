@@ -97,6 +97,7 @@ namespace canvas
          void strokeRect(float x, float y, float width, float height);
          
          void clear();
+         void clearRect(float x, float y, float width, float height);
          
       private:
          inline State & currentState() { return m_stateStack.back(); }

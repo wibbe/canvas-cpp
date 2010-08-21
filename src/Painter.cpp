@@ -83,6 +83,7 @@ namespace canvas
                        .function("fill", &Context::fill)
                        .function("stroke", &Context::stroke)
                        .function("clear", &Context::clear)
+                       .function("clearRéct", &Context::clearRect)
                        .attribute("lineWidth", &Context::lineWidth, &Context::setLineWidth)
                        .attribute("lineCap", &Context::lineCap, &Context::setLineCap)
                        .attribute("strokeStyle", &Context::strokeStyle, &Context::setStrokeStyle)

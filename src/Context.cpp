@@ -251,6 +251,13 @@ namespace canvas
       m_bitmap->eraseARGB(0, 0, 0, 0);
    }
    
+   void Context::clearRect(float x, float y, float width, float height)
+   {
+      SkPaint paint;
+      paint.setColor(SkColorSetARGB(0, 0, 0,0));
+      m_canvas->drawRect(SkRect::MakeXYWH(x, y, width, height), paint);
+   }
+   
    void Context::syncPaintWithState()
    {
       State const& state = currentState();
